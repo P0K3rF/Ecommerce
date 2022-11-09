@@ -183,7 +183,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				<div class="modal-header">
 					<h4>CART ITEM</h4>
 				</div>
-				<div class="modal-body" id="modalbody"></div>
+				<div class="modal-body" id="modalbody">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -192,11 +193,6 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 	<!-- Popper.JS -->
 
-
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
-		integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
-		crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 		crossorigin="anonymous"></script>
@@ -226,10 +222,11 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 			 data:JSON.stringify(prodId),
 
 			 success:function(result){
+					 $('#modalbody').html('');
 				 $.each(result,function(index,item){
 					 console.log(result)
 					 
-					 let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
+					  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
 		              '<div class="row no-gutters">'+
 	                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
 	                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
@@ -255,7 +252,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				;
 				
 				
-				$("#modalbody").html(htmlVar);
+				$("#modalbody").append(htmlVar); 
 					 
 				 })
 
