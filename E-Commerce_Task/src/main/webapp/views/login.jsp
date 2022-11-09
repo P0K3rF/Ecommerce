@@ -18,7 +18,7 @@
 </style>
 </head>
 <body>
-${msg}
+	<h5>${param.msg}</h5>
 	<div class="container py-5 ">
 		<div class="col-md-5 offset-md-3">
 			<div class="card">
@@ -26,26 +26,28 @@ ${msg}
 					<h2>Login Page</h2>
 				</div>
 				<div class="card-body">
-					<form:form action="login" method="post" id="log-form" modelAttribute="loginCredentialDto">
+					<form:form action="login" method="post" id="log-form"
+						modelAttribute="loginCredentialDto">
 						<div class="form-group">
 							<label for="email" style="margin-top: 5%">Email:<span
-								style="color: red; padding-left: 5px">*</span></label>  <input
+								style="color: red; padding-left: 5px">*</span></label> <input
 								type="text" class="form-control" id="useremail"
 								placeholder="Enter email" name="email">
-								<%-- <form:input cssClass="form-control" path="email"/> --%>
+							<%-- <form:input cssClass="form-control" path="email"/> --%>
 							<form:errors path="email" cssClass="error" />
 						</div>
 						<div class="form-group">
 							<label for="userpassword" style="margin-top: 5%">Password:<span
 								style="color: red; padding-left: 5px">*</span></label> <input
 								type="password" class="form-control" id="userpassword"
-								placeholder="Enter password" name="password" >
-									<form:errors path="password" cssClass="error" />
+								placeholder="Enter password" name="password">
+							<form:errors path="password" cssClass="error" />
 						</div>
 						<span></span>
 						<div class="container text-center py-3">
 							<button type="submit" class="btn btn-default bg-danger">Submit</button>
 						</div>
+						<p style="display:inline ">New to Website?  </p><a href="/customer/register">Sign up</a>
 					</form:form>
 				</div>
 			</div>

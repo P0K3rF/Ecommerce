@@ -1,5 +1,7 @@
 package com.concerto.ecommerce.dto;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -11,9 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class CustomerRequestDto {
+public class CustomerRequestDto implements Serializable{
+
+	private static final long serialVersionUID = -2197545781937894900L;
+
 	@NotBlank(message = "Email cannot Be Empty")
-	@Email(message = "")
+	@Email(message = "Invalid Email Format")
 	private String email;
 	@NotBlank(message = "Required Field")
 	private String firstName;

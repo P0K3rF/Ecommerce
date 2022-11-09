@@ -25,11 +25,12 @@ public class LoginCredentialsService {
 			Optional<LoginCredentials> optionalCredentials=this.credentialsRepository.findById(credentials.getEmail());
 			if(optionalCredentials.isPresent()) {
 				String password=optionalCredentials.get().getPassword();
-				if(password.equals(credentials.getPassword()))
-					return true;
+				if(password.equals(credentials.getPassword())) return true;
 			}
+			return false;
 		}
-		throw new EntityNotFoundException("Entity Not Found");
+//		throw new EntityNotFoundException("Entity Not Found");
+		return false;
 	}
 	
 }

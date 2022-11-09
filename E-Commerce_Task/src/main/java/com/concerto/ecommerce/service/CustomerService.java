@@ -1,6 +1,9 @@
 package com.concerto.ecommerce.service;
 
+import java.util.Optional;
+
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +36,12 @@ public class CustomerService {
 		}else {
 			throw new EntityExistsException("Customer With the given Email id : "+customerRequestDto.getEmail() + " already exist");
 		}
+	}
+	
+	public Customer getCustomerById(String email) {
+	Optional<Customer> optCustomer=this.customerRepository.findById(email);
+	if(optCustomer.isPresent()) 
+		return optCustomer.get();
+	throw new EntityNotFoundException("Customer Not Found " + email);
 	}
 }

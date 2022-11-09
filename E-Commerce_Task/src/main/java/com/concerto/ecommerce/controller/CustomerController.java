@@ -33,6 +33,9 @@ public class CustomerController {
 			return "registration";
 		}
 		this.customerService.insertCustomer(customerRequestDto);
-		return "redirect:/login";
+		return "redirect:/login?msg=successfully register";
 	}
+	
+	
+	
 }

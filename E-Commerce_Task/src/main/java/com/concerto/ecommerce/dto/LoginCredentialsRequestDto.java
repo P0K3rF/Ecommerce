@@ -1,5 +1,7 @@
 package com.concerto.ecommerce.dto;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -11,7 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 
-public class LoginCredentialsRequestDto {
+public class LoginCredentialsRequestDto implements Serializable{
+
+	private static final long serialVersionUID = -2197545781937894900L;
 	
 	@NotBlank(message = "Required Field")
 	@Email

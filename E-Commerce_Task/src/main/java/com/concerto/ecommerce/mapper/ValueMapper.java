@@ -2,8 +2,10 @@ package com.concerto.ecommerce.mapper;
 
 import com.concerto.ecommerce.dto.CustomerRequestDto;
 import com.concerto.ecommerce.dto.LoginCredentialsRequestDto;
+import com.concerto.ecommerce.dto.ProductRequestDto;
 import com.concerto.ecommerce.entity.Customer;
 import com.concerto.ecommerce.entity.LoginCredentials;
+import com.concerto.ecommerce.entity.Product;
 
 public class ValueMapper {
 	
@@ -25,6 +27,21 @@ public class ValueMapper {
 		
 	}
 	
+	
+	public static CustomerRequestDto convertCustomerToCustomerRequestDto(Customer customer)
+	{
+		//Real entity
+		CustomerRequestDto c=new CustomerRequestDto();
+		c.setEmail(customer.getEmail());
+		c.setFirstName(customer.getFirstName());
+		c.setLastName(customer.getLastName());
+		c.setMobileNo(customer.getMobileNo());
+		c.setAddress(customer.getAddress());
+		c.setPassword(customer.getPassword());
+		return c;
+		
+	}
+	
 	public static LoginCredentials convertCustomerDtoToLogin(CustomerRequestDto customerRequestDto)
 	{
 		LoginCredentials credentials=new LoginCredentials();
@@ -41,4 +58,15 @@ public class ValueMapper {
 		credentials.setRole("ROLE_CUSTOMER");
 		return credentials;
 	}
+	
+	public static Product convertProductDtoToProduct(ProductRequestDto productDto) {
+		Product product=new Product();
+		product.setItemDescription(productDto.getItemDescription());
+		product.setItemName(productDto.getItemName());
+		product.setItemPhoto(productDto.getItemPhoto());
+		product.setItemPrice(productDto.getItemPrice());
+		product.setItemQuantity(productDto.getItemQuantity());
+		return product;
+	}
+	
 }
