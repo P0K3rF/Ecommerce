@@ -2,10 +2,12 @@ package com.concerto.ecommerce.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,12 +70,25 @@ public class HomeController {
 	}
 	
 	@PostMapping("/proudctId")
-	public @ResponseBody Product getProductById(@RequestBody String pid,Model m) {
+	public @ResponseBody List<Product> getProductById(@RequestBody String pid) throws Exception {
 	Product product=this.productService.getProductById(pid);
-	cartProduct.add(product);
-	m.addAttribute("cartProduct",cartProduct);
-	System.out.println(m.getAttribute("cartProduct"));
-	return product;
+	JSONObject jsonObj = new JSONObject(pid);
+//  String prodId = jsonObj.getString("pid");
+ int prodId=jsonObj.getInt("pid");
+	if(cartProduct.isEmpty()) {
+		cartProduct.add(product);
+	}
+	else {
+		for(Product p: cartProduct) {
+			if(p.getItemId()==prodId) {
+				System.out.println("Same Product id" + p.getItemId() + " AND " + prodId);
+				 return cartProduct;
+			}
+		}
+		cartProduct.add(product);
+	}
+	System.out.println(cartProduct);
+	return cartProduct;
 	}
 	
 }

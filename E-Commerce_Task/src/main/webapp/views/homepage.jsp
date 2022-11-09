@@ -10,12 +10,6 @@
 <%
 CustomerRequestDto userDto = (CustomerRequestDto) session.getAttribute("user");
 List<Product> products = (List<Product>) request.getAttribute("products");
-List<Product> prod=new ArrayList();
-if(request.getAttribute("cardProduct")!=null){
-	prod=(List<Product>)request.getAttribute("cardProduct");
-	System.out.println("From jsp Product is "+ prod);
-}
-	
 %>
 
 <!DOCTYPE html>
@@ -56,8 +50,9 @@ if(request.getAttribute("cardProduct")!=null){
 .card-img-top {
 	object-fit: contain;
 }
+
 .modal-footer {
-    border-top: 0 none;
+	border-top: 0 none;
 }
 </style>
 </head>
@@ -188,85 +183,28 @@ if(request.getAttribute("cardProduct")!=null){
 				<div class="modal-header">
 					<h4>CART ITEM</h4>
 				</div>
-				<div class="modal-body" id="modalbody">
-				
-				<%
-				
-				for(Product p:prod){
-				%>
-				
-				<div class="card shadow  mb-2 bg-white rounded">
-               <div class="row no-gutters">
-                   <div class="col-sm-3" style="border-right: 2px solid blue;">
-                       <img class="card-img-top img-fluid my-2"
-                           alt="Suresh Dasari Card" style="height: 100px; width: 200px;">
-                   </div>
-                   <div class="col-sm-9">
-                       <div class="card-body" style="height: 80px">
-                           <h5 class="card-title"><%=p.getItemName()%></h5>
-                           <p class="small"><%=p.getItemDescription()%></p>
-                       </div>
-                       <div class="card-footer">
-
-                           <div class="text-right">
-                               <a
-                                   href="#" class="btn btn-danger btn-sm">Buy Now</a>
-                           </div>
-
-
-                       </div>
-                   </div>
-               </div>
-           </div>
-				
-				
-				
-				
-				
-				
-				<%
-				}
-				%>
-				
-				
-				
-				</div>
+				<div class="modal-body" id="modalbody"></div>
 			</div>
 		</div>
 	</div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<!-- Popper.JS -->
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
-        integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
-        crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-        crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+		integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+		crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+		crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 	<script>
 		
@@ -286,9 +224,47 @@ if(request.getAttribute("cardProduct")!=null){
 			 dataType : 'json',
 			url:'proudctId',  
 			 data:JSON.stringify(prodId),
-			 success:function(result){
 
-			 },
+			 success:function(result){
+				 $.each(result,function(index,item){
+					 console.log(result)
+					 
+					 let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
+		              '<div class="row no-gutters">'+
+	                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
+	                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
+	                   '</div>'+
+	                  '<div class="col-sm-9">'+
+	                       '<div class="card-body" style="height: 80px">'+
+	                           '<h5 class="card-title">'+item.itemName+'</h5>'+
+	                           '<p class="small">'+item.itemDescription.substring(0,100)+'...</p>'+
+	                       '</div>'+
+	                      '<div class="card-footer" style="border: 0;">'+
+
+	                           '<div class="text-right">'+
+	                               '<a href="#" class="btn btn-danger btn-sm">Buy Now</a>'+
+	                           '</div>'+
+
+
+	                       '</div>'+
+	                  ' </div>'+
+	               '</div>'+
+	           '</div>'
+				
+				
+				;
+				
+				
+				$("#modalbody").html(htmlVar);
+					 
+				 })
+
+				
+				 
+						 	
+						
+							
+						 },
 			 error: function(xhr, status, error) {
 			      console.log(error)
 			   },			
