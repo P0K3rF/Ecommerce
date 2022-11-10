@@ -2,7 +2,6 @@ package com.concerto.ecommerce.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -21,28 +20,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.concerto.ecommerce.dto.CustomerRequestDto;
 import com.concerto.ecommerce.dto.LoginCredentialsRequestDto;
+import com.concerto.ecommerce.dto.OrderRequestDto;
+import com.concerto.ecommerce.dto.ResponseStatus;
 import com.concerto.ecommerce.entity.Customer;
 import com.concerto.ecommerce.entity.Product;
 import com.concerto.ecommerce.mapper.ValueMapper;
 import com.concerto.ecommerce.service.CustomerService;
 import com.concerto.ecommerce.service.LoginCredentialsService;
+import com.concerto.ecommerce.service.OrderService;
 import com.concerto.ecommerce.service.ProductService;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
-	LoginCredentialsService credentialsService; 
-	
+	LoginCredentialsService credentialsService;
+
 	@Autowired
 	ProductService productService;
-	
+
 	@Autowired
 	CustomerService customerService;
 	
-	List<Product> cartProduct=new ArrayList<>();
-	
-	@RequestMapping({"/","index"})
+	@Autowired
+	OrderService orderService;
+
+	List<Product> cartProduct = new ArrayList<>();
+
+	@RequestMapping({ "/", "index" })
 	public String home(Model m) {
 		m.addAttribute("products", this.productService.getAllProducts());
 		return "homepage";
@@ -50,45 +55,86 @@ public class HomeController {
 
 	@RequestMapping("/login")
 	public String login(Model m) {
-		m.addAttribute("loginCredentialDto",new LoginCredentialsRequestDto());
+		m.addAttribute("loginCredentialDto", new LoginCredentialsRequestDto());
 		return "login";
 	}
-	
+
 	@PostMapping("/login")
-	public String postLogin(@Valid @ModelAttribute("loginCredentialDto") LoginCredentialsRequestDto credentials ,BindingResult bindingResult,HttpSession session) {
-		if(bindingResult.hasErrors()) {
+	public String postLogin(@Valid @ModelAttribute("loginCredentialDto") LoginCredentialsRequestDto credentials,
+			BindingResult bindingResult, HttpSession session) {
+		if (bindingResult.hasErrors()) {
 			return "login";
 		}
-		if(this.credentialsService.validate(credentials)) {
-	CustomerRequestDto customerRequestDto=ValueMapper.convertCustomerToCustomerRequestDto(this.customerService.getCustomerById(credentials.getEmail()));	
-	
-	session.setAttribute("user", customerRequestDto);
+		if (this.credentialsService.validate(credentials)) {
+			CustomerRequestDto customerRequestDto = ValueMapper
+					.convertCustomerToCustomerRequestDto(this.customerService.getCustomerById(credentials.getEmail()));
+
+			session.setAttribute("user", customerRequestDto);
 			return "redirect:/";
-		}else {
-		return "redirect:login?msg=Invalid Credentials";
+		} else {
+			return "redirect:login?msg=Invalid Credentials";
 		}
 	}
 	
+	@PostMapping("/getCartProduct")
+	public @ResponseBody List<Product> getProductsInCart(@RequestBody String data,HttpSession session) throws Exception {
+		
+		if(session.getAttribute("user")==null) {
+			return null;
+		}
+		if(!this.cartProduct.isEmpty())
+			return this.cartProduct;
+		return null;
+	}
+
 	@PostMapping("/proudctId")
-	public @ResponseBody List<Product> getProductById(@RequestBody String pid) throws Exception {
-	Product product=this.productService.getProductById(pid);
-	JSONObject jsonObj = new JSONObject(pid);
-//  String prodId = jsonObj.getString("pid");
- int prodId=jsonObj.getInt("pid");
-	if(cartProduct.isEmpty()) {
-		cartProduct.add(product);
-	}
-	else {
-		for(Product p: cartProduct) {
-			if(p.getItemId()==prodId) {
-				System.out.println("Same Product id" + p.getItemId() + " AND " + prodId);
-				 return cartProduct;
-			}
+	public @ResponseBody List<Product> getProductById(@RequestBody String pid, HttpSession session) throws Exception {
+		
+		if(session.getAttribute("user")==null) {
+			return null;
 		}
-		cartProduct.add(product);
-	}
-	System.out.println(cartProduct);
-	return cartProduct;
+		
+		JSONObject jsonObj = new JSONObject(pid);
+		int prodId = jsonObj.getInt("pid");
+		Product product = this.productService.getProductById(prodId);
+		if (cartProduct.isEmpty()) {
+			cartProduct.add(product);
+		} else {
+			for (Product p : cartProduct) {
+				if (p.getItemId() == prodId) {
+					return cartProduct;
+				}
+			}
+			cartProduct.add(product);
+		}
+		System.out.println(cartProduct);
+		return cartProduct;
 	}
 	
+	
+	@PostMapping("/search")
+	public @ResponseBody List<Product> getProductBySearch(@RequestBody String productName){
+		JSONObject jsonObj = new JSONObject(productName);
+		String name = jsonObj.getString("productName");
+		System.out.println(name);
+		if (name.trim().isEmpty()) {
+			name="";
+		}
+		System.out.println(name);
+		return this.productService.getProductBySearch(name);
+	}
+	
+	
+	@PostMapping("/buyproduct")
+	public @ResponseBody ResponseStatus<String> buyProduct(@RequestBody String pid,HttpSession session){
+		JSONObject orderJson = new JSONObject(pid);
+		int prodId=orderJson.getInt("productId");
+	CustomerRequestDto customer=(CustomerRequestDto)session.getAttribute("user");
+		if(
+		this.orderService.buyProduct(customer.getEmail(), prodId))
+			return new ResponseStatus<>(200,"Order Placed");
+		else
+			return new ResponseStatus<>(401,"something went wrong");
+	}
+
 }

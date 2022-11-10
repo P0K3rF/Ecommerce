@@ -91,12 +91,14 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 
 					<!-- Search form -->
-					<form class="d-none d-md-flex input-group w-auto my-auto">
-						<input autocomplete="off" type="search"
+					<form class="d-none d-md-flex input-group w-auto my-auto"
+						action="SearchProduct" method="POST" id="search-form">
+						<input autocomplete="off" type="search" id="input-search"
 							class="form-control rounded" placeholder='Search For Product'
 							style="min-width: 225px" /> <span
 							class="input-group-text border-0">
-							<button type="button" class="btn">
+							<button type="submit"  class="btn" id="search-product"
+								onclick="searchProduct()"> 
 								<span class="fas fa-search"></span> search
 							</button>
 						</span>
@@ -139,38 +141,42 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				</div>
 			</nav>
 			<!-- Card  -->
-			<%
-			for (Product p : products) {
-			%>
-			<div class="card shadow  mb-2 bg-white rounded h-8">
-				<div class="row no-gutters">
-					<div class="col-sm-3" style="border-right: 2px solid blue;">
-						<img class="card-img-top img-fluid my-2"
-							src="../productimages/<%=p.getItemPhoto()%>"
-							alt="Suresh Dasari Card" style="height: 200px; width: 350px;">
-					</div>
-					<div class="col-sm-9">
-						<div class="card-body" style="height: 180px">
-							<h5 class="card-title"><%=p.getItemName()%></h5>
-							<p class="card-text"><%=p.getItemDescription()%></p>
+			<div class="container" id="product-container">
+				<%
+				for (Product p : products) {
+				%>
+				<div class="card shadow  mb-2 bg-white rounded h-8">
+					<div class="row no-gutters">
+						<div class="col-sm-3" style="border-right: 2px solid blue;">
+							<img class="card-img-top img-fluid my-2"
+								src="../productimages/<%=p.getItemPhoto()%>"
+								alt="Suresh Dasari Card" style="height: 200px; width: 350px;">
 						</div>
-						<div class="card-footer" style="border: 0;">
-
-							<div class="text-right">
-								<a class="btn btn-primary" id="addCart"
-									onclick="addToCart(<%=p.getItemId()%>)">Add to Cart</a> <a
-									href="#" class="btn btn-danger">Buy Now</a>
+						<div class="col-sm-9">
+							<div class="card-body" style="height: 180px">
+								<h5 class="card-title"><%=p.getItemName()%></h5>
+								<p class="card-text"><%=p.getItemDescription()%></p>
 							</div>
+							<div class="card-footer" style="border: 0;">
+
+								<div class="text-right">
+									<a class="btn btn-primary" id="addCart"
+										onclick="addToCart(<%=p.getItemId()%>)">Add to Cart</a> 
+										<a
+									 class="btn btn-danger mx-2"
+										onclick="buyProduct(<%=p.getItemId()%>)">Buy Now</a>
+								</div>
 
 
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<%
-			}
-			%>
+				<%
+				}
+				%>
+			</div>
 		</div>
 	</div>
 
@@ -183,13 +189,10 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				<div class="modal-header">
 					<h4>CART ITEM</h4>
 				</div>
-				<div class="modal-body" id="modalbody">
-				</div>
+				<div class="modal-body" id="modalbody"></div>
 			</div>
 		</div>
 	</div>
-
-
 
 	<!-- Popper.JS -->
 
@@ -203,18 +206,55 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 	<script>
-		
-	function addToCart(pid){
-		console.log(pid)
-		
 	
+	$(document).ready(function(){
+		$.ajax({
+			type:"POST",
+			contentType : 'application/json; charset=utf-8',
+			 dataType : 'json',
+			url:'getCartProduct',  
+			data:{"data":"data"},
+			 success:function(result){
+				 $('#modalbody').html('');
+				 $.each(result,function(index,item){
+					 console.log(result)
+					 
+					  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
+		              '<div class="row no-gutters">'+
+	                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
+	                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
+	                   '</div>'+
+	                  '<div class="col-sm-9">'+
+	                       '<div class="card-body" style="height: 80px">'+
+	                           '<h5 class="card-title">'+item.itemName+'</h5>'+
+	                           '<p class="small">'+item.itemDescription.substring(0,100)+'...</p>'+
+	                       '</div>'+
+	                      '<div class="card-footer" style="border: 0;">'+
+	                           '<div class="text-right">'+
+	                               '<a class="btn btn-danger mx-2" onclick="buyProduct('+item.itemId+')">Buy Now</a>'+
+	                           '</div>'+
+	                       '</div>'+
+	                  ' </div>'+
+	               '</div>'+
+	           '</div>'
+				;
+				$("#modalbody").append(htmlVar); 
+					 
+				 })
+			 },
+			 error: function(xhr, status, error) {
+				 $("#modalbody").append('<h1>Cart is Empty </h1>'); 
+			   }
 		
+	});
+	});
+
+	
+	function addToCart(pid){
 		let prodId={
 			"pid":pid
 		}
-		
-		$.ajax({
-			
+		$.ajax({	
 			type:"POST",
 			contentType : 'application/json; charset=utf-8',
 			 dataType : 'json',
@@ -237,43 +277,113 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	                           '<p class="small">'+item.itemDescription.substring(0,100)+'...</p>'+
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
-
 	                           '<div class="text-right">'+
-	                               '<a href="#" class="btn btn-danger btn-sm">Buy Now</a>'+
+	                               '<a class="btn btn-danger mx-2" onclick="buyProduct('+item.itemId+')">Buy Now</a>'+
 	                           '</div>'+
-
-
 	                       '</div>'+
 	                  ' </div>'+
 	               '</div>'+
 	           '</div>'
-				
-				
 				;
-				
-				
 				$("#modalbody").append(htmlVar); 
 					 
 				 })
-
-				
-				 
-						 	
-						
-							
-						 },
+			 },
 			 error: function(xhr, status, error) {
-			      console.log(error)
+				 window.location.replace("http://localhost:8081/login")
 			   },			
 		});
-
-		
-		
 	}
 
 
-		
-		</script>
+function searchProduct(){
+	
+	
+	document.getElementById("search-form").addEventListener("click", function(event){
+		  event.preventDefault()
+		});
+	
+	let prodname=$('#input-search').val();	
+	let searchval={
+	"productName":prodname
+	}
+	$.ajax({
+		type:"POST",
+		contentType : 'application/json; charset=utf-8',
+		 dataType : 'json',
+		url:'search',  
+		 data:JSON.stringify(searchval),
+		 success:function(result){
+			 console.log(result);
+			 $('#product-container').html('');
+			 $.each(result,function(index,item){
+				 let htmlVar ='<div class="card shadow  mb-2 bg-white rounded h-8">'+
+					'<div class="row no-gutters">'+
+					'<div class="col-sm-3" style="border-right: 2px solid blue;">'+
+						'<img class="card-img-top img-fluid my-2" src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 200px; width: 350px;"/>'+
+					'</div>'+
+				'<div class="col-sm-9">'+
+						'<div class="card-body" style="height: 180px">'+
+							'<h5 class="card-title">'+item.itemName+'</h5>'+
+							'<p class="card-text">'+item.itemDescription+'</p>'+
+					'</div>'+
+						'<div class="card-footer" style="border: 0;">'+
+
+						'<div class="text-right">'+
+								'<a class="btn btn-primary" id="addCart" onclick="addToCart('+item.itemId+')">Add to Cart</a>'+
+								'<a href="#" class="btn btn-danger mx-2	">Buy Now</a>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+				'</div>'+
+			'</div>'
+			;
+				 $('#product-container').append(htmlVar);
+			 })	 
+		 },
+		 error: function(xhr, status, error) {
+			console.log(error)
+			
+		   },	
+	})
+	
+}		
+
+
+
+
+       function buyProduct(pid){
+    	   let prodid={
+    			   "productId":pid
+    	   }
+    	   
+    		$.ajax({
+    			type:"POST",
+    			contentType : 'application/json; charset=utf-8',
+    			 dataType : 'json',
+    			url:'buyproduct',  
+    			 data:JSON.stringify(prodid),
+    			 success:function(result){
+    				 if(result.statusCode==200){
+    					 swal("Order Placed Succesfully click OK to Track your order")
+    					 .then((value)=>{
+    						 window.location="http://localhost:8081/customer/order";
+    					 })
+    				 }
+    				 else{
+    					 
+    				 }
+    			 
+    			 },
+    			 error: function(xhr, status, error) {
+    				console.log(error)
+    				
+    			   },	
+    		})
+    	   
+    	   
+    	   
+       }
 
 
 
@@ -282,6 +392,18 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+</script>
 
 </body>
 

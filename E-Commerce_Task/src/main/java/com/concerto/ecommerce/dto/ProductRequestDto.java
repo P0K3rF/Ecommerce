@@ -2,8 +2,6 @@ package com.concerto.ecommerce.dto;
 
 import java.io.Serializable;
 
-import com.concerto.ecommerce.entity.Product;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

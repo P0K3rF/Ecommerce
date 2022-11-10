@@ -35,11 +35,14 @@ public class ProductService {
 		return getProducts;
 	}
 	
-	public Product getProductById(String pid) {
-		JSONObject jsonObj = new JSONObject(pid);
-//        String prodId = jsonObj.getString("pid");
-       int prodId=jsonObj.getInt("pid");        
-		return this.productRepository.findById(prodId).get();
+	public Product getProductById(int pid) {
+      
+		return this.productRepository.findById(pid).get();
+	}
+	
+	public List<Product> getProductBySearch(String productName){
+		return this.productRepository.findByItemNameContaining(productName);
+		
 	}
 	
 }
