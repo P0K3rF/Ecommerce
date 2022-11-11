@@ -68,8 +68,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 			<ul class="list-unstyled components">
 				<p class="font-weight-normal">Main Menu</p>
-				<li><a href="#">Home</a></li>
-				<li><a href="#">About</a></li>
+				<li><a href="http://localhost:8081/">Home</a></li>
+				<li><a href="http://localhost:8081/customer/order">Order</a></li>
 				<li><a href="#">Portfolio</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
@@ -97,8 +97,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 							class="form-control rounded" placeholder='Search For Product'
 							style="min-width: 225px" /> <span
 							class="input-group-text border-0">
-							<button type="submit"  class="btn" id="search-product"
-								onclick="searchProduct()"> 
+							<button type="submit" class="btn" id="search-product"
+								onclick="searchProduct()">
 								<span class="fas fa-search"></span> search
 							</button>
 						</span>
@@ -146,6 +146,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				for (Product p : products) {
 				%>
 				<div class="card shadow  mb-2 bg-white rounded h-8">
+
 					<div class="row no-gutters">
 						<div class="col-sm-3" style="border-right: 2px solid blue;">
 							<img class="card-img-top img-fluid my-2"
@@ -157,19 +158,22 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 								<h5 class="card-title"><%=p.getItemName()%></h5>
 								<p class="card-text"><%=p.getItemDescription()%></p>
 							</div>
-							<div class="card-footer" style="border: 0;">
-
-								<div class="text-right">
-									<a class="btn btn-primary" id="addCart"
-										onclick="addToCart(<%=p.getItemId()%>)">Add to Cart</a> 
-										<a
-									 class="btn btn-danger mx-2"
+							<h4 class="mx-2"><%=p.getItemPrice() %></h4>
+							<div class="card-footer text-right" style="border: 0;">
+									
+								
+								
+								<a class="btn btn-primary" id="addCart"
+										onclick="addToCart(<%=p.getItemId()%>)">Add to Cart</a> <a
+										class="btn btn-danger mx-2"
 										onclick="buyProduct(<%=p.getItemId()%>)">Buy Now</a>
-								</div>
-
+							
+								
+								
+							
 
 							</div>
-						</div>
+						</div> 
 					</div>
 				</div>
 
