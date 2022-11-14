@@ -41,29 +41,29 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form id="add_Post_form" action="AddPostServlet" method="POST"
+						<form id="add_Post_form" action="addproduct" method="POST"
 							enctype="multipart/form-data">
 
 							<br>
 							<div class="form-group">
-								Product Title : <input name="post_title" type="text"
+								Product Title : <input name="itemName" type="text"
 									placeholder="Enter Post Title" class="form-control">
 							</div>
 							<br>
 							<div class="form-group">
 								Product Description :
-								<textarea name="post_content"
+								<textarea name="itemDescription"
 									placeholder="Enter Product Description" class="form-control"
 									style="height: 200px"></textarea>
 							</div>
 							<br>
 							<div class="form-group">
-								Product Price: <input type="text" name="post_code"
+								Product Price: <input type="text" name="itemPrice"
 									placeholder="Enter Product Price" class="form-control" />
 							</div>
 
 							<div class="form-group">
-								Product Quantity: <input type="number" name="post_code"
+								Product Quantity: <input type="number" name="itemQuantity"
 									placeholder="Enter Product Quantity" class="form-control" />
 							</div>
 							<br>
@@ -71,7 +71,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 								<label id="1st" class="btn custom-input-btn" style="color: blue">
 									<i class="fa fa-cloud-upload" style="color: blue"></i> <input
-									type="file" name="profile_pic" multiple>
+									type="file" name="image" multiple>
 								</label>
 
 							</div>
@@ -223,6 +223,28 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	
 	<script>
 	
+	$(document).ready(function(){
+		('#add_Post_form').on('submit',function(event){
+			let form=new FormData(this);
+			
+			$.ajax({
+				url : "addproduct",
+				type : "POST",
+				data : form,
+				success : function(data, textStatus, jqXHR) {
+					console.log(data)
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown)
+				},
+				processData : false,
+				contentType : false
+			})
+			
+		})
+	})
+	
+	
 	function updateProduct(pid){
 		let prodId={
 				"productId":pid
@@ -240,7 +262,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				 $('#price').val(result.t.itemPrice)
 				 $('#quantity').val(result.t.itemQuantity)
 				 
-			let htmlvar='<img src="../productimages/'+result.t.itemPhoto+'" id="output" class="img-fluid" style="border-radius: 50%; height: 155px; width: 150px" /><br>'
+			let htmlvar='<img src="../productimages/'+result.t.itemPhoto+'" id="output" class="img-fluid" style="height: 155px; width: 150px" /><br>'
 				 
 				 $('#itemImage').html(htmlvar)
 			 },
@@ -260,8 +282,37 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	};
 	
 	function deleteProduct(pid){
-		console.log("Delete button clicked for product id " +pid)
+		let prodId={
+				"productId":pid
+		}
+		
+		$.ajax({
+			type:"POST",
+			contentType : 'application/json; charset=utf-8',
+			 dataType : 'json',
+			url:'deleteproductbyid',  
+			 data:JSON.stringify(prodId),
+			 success:function(result){
+				 if(result.statusCode==200){
+					 swal("Deleted Succesfully")
+					 .then((value)=>{
+						 window.location="http://localhost:8081/admin/dashboard";
+					 })
+				 }
+				 else{
+					 
+				 }
+			 },
+			 error(xhr, status, error){
+				 console.log(error)
+			 },
+				
+		});
 	}
+	
+	
+	
+	
 	
 	</script>
 	

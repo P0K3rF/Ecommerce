@@ -18,11 +18,14 @@ import org.hibernate.annotations.ColumnDefault;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 
 @Entity
 @Table(name = "order_Table")
@@ -30,14 +33,23 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int orderId;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "itemId")
 	private Product product;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="email")
 	private Customer customer;
 	
 	@Column(name="orderDate", nullable = false,
 		    columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
 	private Date OrderDate = new Date();
+
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", customer=" + customer + ", OrderDate=" + OrderDate + "]";
+	}
+	
+	
+	
+	
 }

@@ -13,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
 	public List<Product> findByItemNameContaining(String productName);
 	
+	@Query(nativeQuery = true,value = "select itemQuantity from product where itemId=?")
+	int countProductQuantity(@Param("itemId") int id);
 }

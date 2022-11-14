@@ -20,8 +20,10 @@ public class ProductService {
 	
 	public boolean insertProduct(ProductRequestDto productRequestDto) {
 		Product product=ValueMapper.convertProductDtoToProduct(productRequestDto);
+		System.out.println(product);
 		if(!this.productRepository.existsById(product.getItemId()))
 		{
+			System.out.println("Inserting product to database");
 			this.productRepository.save(product);
 			return true;
 		}
@@ -45,4 +47,12 @@ public class ProductService {
 		
 	}
 	
+	public boolean deleteProuctById(int id) {
+		this.productRepository.deleteById(id);
+		return true;
+	}
+	
+	public int getQuantity(int productId) {
+		return this.productRepository.countProductQuantity(productId);
+	}
 }

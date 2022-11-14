@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.concerto.ecommerce.dto.CustomerRequestDto;
@@ -120,7 +121,6 @@ public class HomeController {
 		if (name.trim().isEmpty()) {
 			name="";
 		}
-		System.out.println(name);
 		return this.productService.getProductBySearch(name);
 	}
 	
@@ -129,12 +129,25 @@ public class HomeController {
 	public @ResponseBody ResponseStatus<String> buyProduct(@RequestBody String pid,HttpSession session){
 		JSONObject orderJson = new JSONObject(pid);
 		int prodId=orderJson.getInt("productId");
+		
+//		System.out.println();
 	CustomerRequestDto customer=(CustomerRequestDto)session.getAttribute("user");
 		if(
 		this.orderService.buyProduct(customer.getEmail(), prodId))
 			return new ResponseStatus<>(200,"Order Placed");
 		else
-			return new ResponseStatus<>(401,"something went wrong");
+			return new ResponseStatus<>(401,"Out Of Stock");
 	}
 
+	@GetMapping("/viewproduct")
+	public String viewProductPage(@RequestParam("product_id") int productId,Model m) {
+		Product product= this.productService.getProductById(productId);
+		m.addAttribute("product",product);
+		
+		System.out.println("Product Id is "+ productId);
+		return "viewproduct";
+	}
+	
+	
+	
 }

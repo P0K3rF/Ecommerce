@@ -24,17 +24,24 @@ public class OrderService {
 	OrderRepository orderRepository;
 	
 	public boolean buyProduct(String email,int productId) {
+		
 		Customer customer=this.customerService.getCustomerById(email);
 		Product product=this.productService.getProductById(productId);
+	int productQuantity=this.productService.getQuantity(productId);
+	int countOrder=this.orderRepository.countProduct(productId);
+	if(productQuantity>countOrder) {
 		Order order=new Order();
 		order.setCustomer(customer);
 		order.setProduct(product);
 		this.orderRepository.save(order);
 		return true;
 	}
+		return false;
+		
+	}
 	
 	public List<Order> getAllOrderByEmail(Customer customer){
-		
+		System.out.println("Email of customer "+customer.getEmail());
 	return this.orderRepository.findAllByCustomer(customer);
 	}
 }

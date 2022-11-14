@@ -54,6 +54,12 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 .modal-footer {
 	border-top: 0 none;
 }
+.btn-outline-warning{
+border:2px solid red;
+}
+.btn-outline-info{
+border:2px solid blue;
+}
 </style>
 </head>
 
@@ -61,19 +67,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 	<div class="wrapper">
 		<!-- Sidebar  -->
-		<nav id="sidebar" aria-labelledby="sidebar-header">
-			<div class="sidebar-header">
-				<h3>Ecommerce Application</h3>
-			</div>
-
-			<ul class="list-unstyled components">
-				<p class="font-weight-normal">Main Menu</p>
-				<li><a href="http://localhost:8081/">Home</a></li>
-				<li><a href="http://localhost:8081/customer/order">Order</a></li>
-				<li><a href="#">Portfolio</a></li>
-				<li><a href="#">Contact</a></li>
-			</ul>
-		</nav>
+		<%@include file="side_navbar.jsp" %>
 
 		<!-- Page Content  -->
 		<div id="content">
@@ -156,22 +150,31 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 						<div class="col-sm-9">
 							<div class="card-body" style="height: 180px">
 								<h5 class="card-title"><%=p.getItemName()%></h5>
-								<p class="card-text"><%=p.getItemDescription()%></p>
-							</div>
+								<%
+								int descriptionsize=p.getItemDescription().length();
+								if(descriptionsize>200){
+									%>
+									
+									<p class="card-text"><%=p.getItemDescription().substring(0, 200)%>...</p>
+								<% }
+								else{
+									%>
+									<p class="card-text"><%=p.getItemDescription()%>...</p>
+								<%
+								}
+								%>
+								
 							<h4 class="mx-2"><%=p.getItemPrice() %></h4>
+							</div>
+							
 							<div class="card-footer text-right" style="border: 0;">
 									
 								
 								
-								<a class="btn btn-primary" id="addCart"
+								<a class="btn btn-outline-warning text-dark" id="addCart"
 										onclick="addToCart(<%=p.getItemId()%>)">Add to Cart</a> <a
-										class="btn btn-danger mx-2"
-										onclick="buyProduct(<%=p.getItemId()%>)">Buy Now</a>
-							
-								
-								
-							
-
+										class="btn btn-outline-info mx-2 text-dark"
+										onclick="viewProduct(<%=p.getItemId()%>)">View Product</a>
 							</div>
 						</div> 
 					</div>
@@ -230,8 +233,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	                   '</div>'+
 	                  '<div class="col-sm-9">'+
 	                       '<div class="card-body" style="height: 80px">'+
-	                           '<h5 class="card-title">'+item.itemName+'</h5>'+
-	                           '<p class="small">'+item.itemDescription.substring(0,100)+'...</p>'+
+	                           '<h6 class="card-title">'+item.itemName+'</h6>'+
+	                   
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
 	                           '<div class="text-right">'+
@@ -253,6 +256,25 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	});
 	});
 
+	
+	function viewProduct(pid){
+		console.log
+		
+		var url = new URL("http://localhost:8081/viewproduct?product_id=");
+		url.searchParams.set('product_id',pid);
+		
+		window.location.href=url;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	function addToCart(pid){
 		let prodId={
@@ -277,8 +299,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	                   '</div>'+
 	                  '<div class="col-sm-9">'+
 	                       '<div class="card-body" style="height: 80px">'+
-	                           '<h5 class="card-title">'+item.itemName+'</h5>'+
-	                           '<p class="small">'+item.itemDescription.substring(0,100)+'...</p>'+
+	                           '<h6 class="card-title">'+item.itemName+'</h6>'+
+	                          
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
 	                           '<div class="text-right">'+
@@ -388,24 +410,6 @@ function searchProduct(){
     	   
     	   
        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </script>
 
