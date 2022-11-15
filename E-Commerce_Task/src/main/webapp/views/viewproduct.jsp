@@ -113,8 +113,12 @@ Product product = (Product) request.getAttribute("product");
  			 
  			 },
  			 error: function(xhr, status, error) {
- 				console.log(error)
- 				
+ 				if(status=="error") {
+ 					swal("You have to login first")
+					 .then((value)=>{
+						 window.location="http://localhost:8081/login";
+					 })
+ 				}
  			   },	
  		})
  	   

@@ -50,7 +50,7 @@ public class CustomerController {
 	@GetMapping("/order")
 	public String orderPage(HttpSession session,Model m) {
 		if(session.getAttribute("user")==null)
-			return "redirect:/";
+			return "redirect:/login";
 	CustomerRequestDto customerRequestDto=(CustomerRequestDto)session.getAttribute("user");
 	Customer customer=ValueMapper.convertCustomerRequestDtoToCustomer(customerRequestDto);
 		List<Order> orders=this.orderService.getAllOrderByEmail(customer);

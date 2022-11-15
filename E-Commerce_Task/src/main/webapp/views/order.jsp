@@ -82,7 +82,19 @@ if(orders.isEmpty())
 						<div class="col-sm-9">
 							<div class="card-body" style="height: 180px">
 								<h5 class="card-title"><%=o.getProduct().getItemName()%></h5>
-								<p class="card-text"><%=o.getProduct().getItemDescription()%></p>
+								<%
+								int descriptionsize=o.getProduct().getItemDescription().length();
+								if(descriptionsize>200){
+									%>
+									
+									<p class="card-text"><%=o.getProduct().getItemDescription().substring(0, 200)%>...</p>
+								<% }
+								else{
+									%>
+									<p class="card-text"><%=o.getProduct().getItemDescription()%>...</p>
+								<%
+								}
+								%>
 							</div>
 							<div class="card-footer" style="border: 0;">
 							<div class="text-right">

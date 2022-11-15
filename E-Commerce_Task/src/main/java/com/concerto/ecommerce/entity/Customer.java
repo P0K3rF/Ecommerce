@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,7 @@ public class Customer {
 	private String mobileNo;
 	private String address;
 	private String password;
-	@Embedded
+	@Transient
 	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	private Order order;
 }

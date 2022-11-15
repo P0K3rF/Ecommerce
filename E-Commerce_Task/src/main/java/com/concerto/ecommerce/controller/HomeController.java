@@ -66,7 +66,13 @@ public class HomeController {
 		if (bindingResult.hasErrors()) {
 			return "login";
 		}
+		
 		if (this.credentialsService.validate(credentials)) {
+			if(this.credentialsService.getCredentails(credentials.getEmail()).getRole().equals("ROLE_ADMIN"))
+				{
+				session.setAttribute("admin", "admin");
+				return "redirect:admin/dashboard";
+				}
 			CustomerRequestDto customerRequestDto = ValueMapper
 					.convertCustomerToCustomerRequestDto(this.customerService.getCustomerById(credentials.getEmail()));
 
@@ -127,16 +133,18 @@ public class HomeController {
 	
 	@PostMapping("/buyproduct")
 	public @ResponseBody ResponseStatus<String> buyProduct(@RequestBody String pid,HttpSession session){
+		
 		JSONObject orderJson = new JSONObject(pid);
 		int prodId=orderJson.getInt("productId");
-		
 //		System.out.println();
+		
 	CustomerRequestDto customer=(CustomerRequestDto)session.getAttribute("user");
 		if(
 		this.orderService.buyProduct(customer.getEmail(), prodId))
 			return new ResponseStatus<>(200,"Order Placed");
 		else
 			return new ResponseStatus<>(401,"Out Of Stock");
+		
 	}
 
 	@GetMapping("/viewproduct")

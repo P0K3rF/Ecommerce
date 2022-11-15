@@ -31,4 +31,8 @@ public class LoginCredentialsService {
 		return false;
 	}
 	
+	public LoginCredentials getCredentails(String email) {
+		return this.credentialsRepository.findById(email).get();
+	}
+	
 }

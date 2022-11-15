@@ -27,10 +27,11 @@ public class ECommerceTaskApplication {
 	}
 
 	
-//	@Bean
+	@Bean
 	public void insert() {
-	System.out.println(this.orderRepository.countProduct(1));
-	System.out.println(this.productRepository.countProductQuantity(1));
+//	System.out.println(this.orderRepository.countProduct(1));
+//	System.out.println(this.productRepository.countProductQuantity(1));
+//		sysout
 //		Product product=new Product(1, "Lenovo Phone", "Lenovo smartphones are marketed as the \"LePhone\" in Mainland China and the \"IdeaPhone\" overseas. Motorola Mobility, ZUK Mobile and Medion, divisions of Lenovo, sell smartphones under their own brands", "LenovoPhone", 2,2000.00);
 //		Product product1=new Product(2, "Lenovo Legion", "With revolutionary performance and efficiency cores, 12th Gen Intel® Core™ processors. Strike out your opponents with speed, precision, & satisfying keystrokes. No Cost EMI. Get Up to 10% Cashback. Types: Slim, Flex, Performance, Detachable.", "Lenovo Legion", 2,2000.00);
 //	

@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,10 +42,15 @@ public class AdminController
 	private String path;
 	
 	@GetMapping("/dashboard")
-	public String adminDashboard(Model m) {
-		List<Product> products=this.productService.getAllProducts();
-		m.addAttribute("products",products);
-		return "dashboard";
+	public String adminDashboard(Model m,HttpSession session) {
+		if(session.getAttribute("admin")!=null) {
+			List<Product> products=this.productService.getAllProducts();
+			m.addAttribute("products",products);
+			return "dashboard";	
+		}
+		return "redirect:/login";
+				
+		
 	}
 	
 	@PostMapping("/getproductbyid")
@@ -77,6 +84,16 @@ public class AdminController
 		dto.setItemPhoto(filename);
 		this.productService.insertProduct(dto);
 		return new ResponseStatus<>(200,"success");
-		
+	}
+	
+	@PostMapping("/updateproduct")
+	public @ResponseBody ResponseStatus<String> updateProduct(@ModelAttribute ProductRequestDto dto) throws IOException
+	{
+		System.out.println("update Product Called with the data : " + dto);
+		this.imageUploader.setId(dto.getItemId());
+		String filename=this.imageUploader.uploadImage(path, dto.getImage());
+		dto.setItemPhoto(filename);
+		this.productService.updateProduct(dto);
+		return new ResponseStatus<>(200,"success");
 	}
 }

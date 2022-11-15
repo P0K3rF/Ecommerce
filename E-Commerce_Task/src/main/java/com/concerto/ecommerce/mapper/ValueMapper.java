@@ -61,6 +61,7 @@ public class ValueMapper {
 	
 	public static Product convertProductDtoToProduct(ProductRequestDto productDto) {
 		Product product=new Product();
+		product.setItemId(productDto.getItemId());
 		product.setItemDescription(productDto.getItemDescription());
 		product.setItemName(productDto.getItemName());
 		product.setItemPhoto(productDto.getItemPhoto());

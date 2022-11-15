@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<nav id="sidebar" aria-labelledby="sidebar-header">
+<nav id="sidebar"  aria-labelledby="sidebar-header">
 			<div class="sidebar-header">
 				<h3>Ecommerce Application</h3>
 			</div>

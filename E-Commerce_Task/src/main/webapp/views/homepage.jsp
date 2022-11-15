@@ -71,7 +71,6 @@ border:2px solid blue;
 
 		<!-- Page Content  -->
 		<div id="content">
-
 			<nav class="navbar navbar-expand-lg navbar-light bg-light"
 				aria-labelledby="container-fluid">
 				<div class="container-fluid">
@@ -117,7 +116,6 @@ border:2px solid blue;
 							} else {
 							%>
 							<li class="nav-item "><h6 class="nav-link">
-									Hello
 									<%=userDto.getEmail()%></h6></li>
 							<%
 							}
@@ -238,7 +236,7 @@ border:2px solid blue;
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
 	                           '<div class="text-right">'+
-	                               '<a class="btn btn-danger mx-2" onclick="buyProduct('+item.itemId+')">Buy Now</a>'+
+	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 	                           '</div>'+
 	                       '</div>'+
 	                  ' </div>'+
@@ -304,7 +302,7 @@ border:2px solid blue;
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
 	                           '<div class="text-right">'+
-	                               '<a class="btn btn-danger mx-2" onclick="buyProduct('+item.itemId+')">Buy Now</a>'+
+	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 	                           '</div>'+
 	                       '</div>'+
 	                  ' </div>'+

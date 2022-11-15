@@ -19,6 +19,7 @@
 	crossorigin="anonymous" />
 
 <%
+
 List<Product> products = (List<Product>) request.getAttribute("products");
 %>
 
@@ -41,7 +42,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form id="add_Post_form" action="addproduct" method="POST"
+						<form id="addProduct" action="addproductasd" method="POST"
 							enctype="multipart/form-data">
 
 							<br>
@@ -91,7 +92,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 		</div>
 
 
-		<table class="table table-primary table-hover my-3 table-bordered"  style="border-color:black;">
+		<table class="table table-primary table-hover my-3 table-bordered"
+			style="border-color: black;">
 			<thead>
 				<tr class="text-center">
 					<th scope="col">Table Id</th>
@@ -111,21 +113,21 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				for (Product p : products) {
 				%>
 				<tr>
-					<th scope="row" ><%=count%></th>
+					<th scope="row"><%=count%></th>
 					<td><%=p.getItemId()%></td>
 					<td><%=p.getItemName()%></td>
 					<td><%=p.getItemDescription()%></td>
 					<td><%=p.getItemPrice()%></td>
 					<td><%=p.getItemQuantity()%></td>
-					
-					<td ><img
-						src="../productimages/<%=p.getItemPhoto()%>" style="height: 60px" width="60px"
-						class="img-fluid img-thumbnail" alt="Sheep"></td>
-						<td><button type="button" class="btn btn-success" 
-						data-bs-toggle="modal" data-bs-target="#update-product-modal"
-						onclick="updateProduct(<%=p.getItemId()%>)">Update</button></td>
-						<td><button type="button" class="btn btn-danger" onclick="deleteProduct(<%=p.getItemId()%>)">Delete</button></td>
-				</tr> 
+
+					<td><img src="../productimages/<%=p.getItemPhoto()%>"
+						style="height: 60px" width="60px" class="img-fluid img-thumbnail"
+						alt="Sheep"></td>
+					<td><button type="button" class="btn btn-success"
+							data-bs-toggle="modal" data-bs-target="#update-product-modal" onclick="getUpdateData(<%= p.getItemId()%>)">Update</button></td>
+					<td><button type="button" class="btn btn-danger"
+							onclick="deleteProduct(<%=p.getItemId()%>)">Delete</button></td>
+				</tr>
 
 
 
@@ -135,8 +137,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				%>
 			</tbody>
 		</table>
-		
-		
+
+
 		<!-- Update Modal -->
 		<div class="modal fade" id="update-product-modal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -148,46 +150,48 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body" id="modal-body">
-						<form id="update_Post_form" action="updateproduct" method="POST"
+						<form id="update_Post_form" action="updateproductasd" method="POST"
 							enctype="multipart/form-data">
 
 							<br>
 							<div class="form-group">
-								Product Title : <input name="title" id="title" type="text"
-									placeholder="Enter Post Title" class="form-control" >
+								Product Title : <input name="itemName" id="title" type="text"
+									placeholder="Enter Post Title" class="form-control">
 							</div>
 							<br>
 							<div class="form-group">
 								Product Description :
-								<textarea name="description" id="description"
-									placeholder="Enter Product Description"  class="form-control"
+								<textarea name="itemDescription" id="description"
+									placeholder="Enter Product Description" class="form-control"
 									style="height: 200px"></textarea>
 							</div>
 							<br>
 							<div class="form-group">
-								Product Price: <input type="text" name="price" id="price"
+								Product Price: <input type="text" name="itemPrice" id="price"
 									placeholder="Enter Product Price" class="form-control" />
 							</div>
 
 							<div class="form-group">
-								Product Quantity: <input type="number" name="quantity" id="quantity"
-									placeholder="Enter Product Quantity" class="form-control" />
+								Product Quantity: <input type="number" name="itemQuantity"
+									id="quantity" placeholder="Enter Product Quantity"
+									class="form-control" />
 							</div>
 							<br>
-							<div class="form-group" id="itemImage" style="border: 2px solid black;display: inline-block;">
-							</div>
+							<div class="form-group" id="itemImage"
+								style="border: 2px solid black; display: inline-block;"></div>
 							<div class="form-group">
 
-								<label id="1st" class="btn custom-input-btn" style="color: blue" onchange="changepro(event)">
-									<i class="fa fa-cloud-upload" style="color: blue"></i> <input
-									type="file" name="itemImage" multiple>
+								<label id="1st" class="btn custom-input-btn" style="color: blue"
+									onchange="changepro(event)"> <i
+									class="fa fa-cloud-upload" style="color: blue"></i> <input
+									type="file"id="file" name="image" multiple>
 								</label>
-								
+
 
 							</div>
 							<br>
 							<div class="container text-end">
-								<button type="submit" class="btn btn-outline-dark btn-lg">Update
+								<button type="submit" class="btn btn-outline-dark btn-lg" >Update
 									Product</button>
 							</div>
 
@@ -199,14 +203,14 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				</div>
 			</div>
 		</div>
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
 	</div>
 
 
@@ -218,34 +222,15 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
 		crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	
-	
-	
+
+
+
 	<script>
 	
-	$(document).ready(function(){
-		('#add_Post_form').on('submit',function(event){
-			let form=new FormData(this);
-			
-			$.ajax({
-				url : "addproduct",
-				type : "POST",
-				data : form,
-				success : function(data, textStatus, jqXHR) {
-					console.log(data)
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown)
-				},
-				processData : false,
-				contentType : false
-			})
-			
-		})
-	})
+	var productId="";
 	
-	
-	function updateProduct(pid){
+	function getUpdateData(pid){
+		productId=pid;
 		let prodId={
 				"productId":pid
 		}
@@ -261,7 +246,6 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				 $('#description').val(result.t.itemDescription)
 				 $('#price').val(result.t.itemPrice)
 				 $('#quantity').val(result.t.itemQuantity)
-				 
 			let htmlvar='<img src="../productimages/'+result.t.itemPhoto+'" id="output" class="img-fluid" style="height: 155px; width: 150px" /><br>'
 				 
 				 $('#itemImage').html(htmlvar)
@@ -273,6 +257,57 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 		});
 	
 	}
+
+		
+		$('#addProduct').on('submit',function(event){
+			event.preventDefault();
+           let form=new FormData(this);   
+           console.log("event handle")
+		 	$.ajax({
+				url : "addproduct",
+				type : "POST",
+				data : form,
+				success : function(data, textStatus, jqXHR) {
+					console.log()
+					swal("Added Succesfully")
+					 .then((value)=>{
+						 window.location="http://localhost:8081/admin/dashboard";
+					 })
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown)
+				},
+				processData : false,
+				contentType : false
+			})  
+	})
+		
+		
+		
+		
+		
+		$('#update_Post_form').on('submit',function(event){
+			event.preventDefault();
+           let form=new FormData(this);   
+           form.set("itemId",productId)
+		 	$.ajax({
+				url : "updateproduct",
+				type : "POST",
+				data : form,
+				success : function(data, textStatus, jqXHR) {
+					swal("Updated Succesfully")
+					 .then((value)=>{
+						 window.location="http://localhost:8081/admin/dashboard";
+					 })
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown)
+				},
+				processData : false,
+				contentType : false
+			})  
+	})
+	
 	var changepro = function(event) {
 		var output = document.getElementById('output');
 		output.src = URL.createObjectURL(event.target.files[0]);
@@ -315,6 +350,6 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	
 	
 	</script>
-	
+
 </body>
 </html>
