@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import com.concerto.ecommerce.entity.Customer;
 import com.concerto.ecommerce.entity.Order;
@@ -12,6 +13,7 @@ import com.concerto.ecommerce.repository.OrderRepository;
 import com.concerto.ecommerce.repository.ProductRepository;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class ECommerceTaskApplication {
 	
 	

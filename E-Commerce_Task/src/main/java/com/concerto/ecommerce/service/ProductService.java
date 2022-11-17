@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -53,16 +54,16 @@ public class ProductService {
 	}
 	
 	
-	public List<Product> getAllProductsPageable(int page){
-		long count=this.productRepository.count();
-		Pageable pageable=PageRequest.of(page,10);
-		this.productRepository.findAll(pageable);
-		List<Product> getProducts=new ArrayList<>();
-		this.productRepository.findAll().forEach(getProducts::add);
-		return getProducts;
+	public Page<Product> getAllProductsPageable(int page){
+		Pageable pageable=PageRequest.of(page, 5);
+		return this.productRepository.findAll(pageable);
 	}
 	
-	
+	public int getProductCount() {
+		int countProduct=(int) this.productRepository.count();
+		float page=(float)countProduct/5;
+		return (int) Math.ceil(page);	
+	}
 	
 	public Product getProductById(int pid) {
       
@@ -82,4 +83,10 @@ public class ProductService {
 	public int getQuantity(int productId) {
 		return this.productRepository.countProductQuantity(productId);
 	}
+	
+	public void deductQuantity(int productQuantity,int itemId) {
+		System.out.println("Before Updating product quantity the values are :" + productQuantity + " AND " + itemId);
+		this.productRepository.updateQuantityOfProductAfterOrder(productQuantity, itemId);
+	}
+	
 }

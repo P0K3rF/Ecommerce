@@ -93,6 +93,23 @@ public class HomeController {
 			return this.cartProduct;
 		return null;
 	}
+	
+	
+	
+	@PostMapping("/removeproduct")
+	public @ResponseBody List<Product> removeProduct(@RequestBody String pid){
+		
+		List<Product> afterRemovingCart=new ArrayList<>();
+		JSONObject jsonObj = new JSONObject(pid);
+		int prodId = jsonObj.getInt("pid");
+		
+	this.cartProduct.stream().filter(cartp->cartp.getItemId()!=prodId).forEach(afterRemovingCart::add);
+	
+	cartProduct=afterRemovingCart;
+		return cartProduct;
+	}
+	
+	
 
 	@PostMapping("/proudctId")
 	public @ResponseBody List<Product> getProductById(@RequestBody String pid, HttpSession session) throws Exception {

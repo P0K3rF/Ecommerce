@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,9 +50,34 @@ public class AdminController
 			return "dashboard";	
 		}
 		return "redirect:/login";
-				
-		
 	}
+	
+	
+	@GetMapping("/testdashboard")
+	public String adminDashboardPageable(@RequestParam(required = false)String page,Model m,HttpSession session) {
+		int pag=Integer.parseInt(page);
+		List<Product>	products=this.productService.getAllProductsPageable(pag).getContent();
+		m.addAttribute("products",products);
+		m.addAttribute("count",this.productService.getProductCount());
+		
+		return "testingdashboard";
+		/*
+		 * if(session.getAttribute("admin")!=null) { List<Product>
+		 * products=this.productService.getAllProducts();
+		 * m.addAttribute("products",products); return "dashboard"; }
+		 */
+//		return "redirect:/login";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@PostMapping("/getproductbyid")
 	public @ResponseBody ResponseStatus<Product> getProductById(@RequestBody String pid){

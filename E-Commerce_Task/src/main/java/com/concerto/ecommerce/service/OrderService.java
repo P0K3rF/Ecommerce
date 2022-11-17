@@ -27,13 +27,21 @@ public class OrderService {
 		
 		Customer customer=this.customerService.getCustomerById(email);
 		Product product=this.productService.getProductById(productId);
+		
 	int productQuantity=this.productService.getQuantity(productId);
-	int countOrder=this.orderRepository.countProduct(productId);
-	if(productQuantity>countOrder) {
+	
+	System.out.println( "Quantity of product before ordering : " + productQuantity);
+
+	if(productQuantity>0) {
 		Order order=new Order();
 		order.setCustomer(customer);
 		order.setProduct(product);
+		System.out.println("Saving order in database ");
 		this.orderRepository.save(order);
+		int deductedquantity=productQuantity-1;
+		
+		this.productService.deductQuantity(deductedquantity, productId);
+		
 		return true;
 	}
 		return false;

@@ -236,6 +236,7 @@ border:2px solid blue;
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
 	                           '<div class="text-right">'+
+	                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
 	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 	                           '</div>'+
 	                       '</div>'+
@@ -266,14 +267,53 @@ border:2px solid blue;
 	}
 	
 	
+	function removeProduct(pid){
+		let prodId={
+				"pid":pid
+			}
+		$.ajax({	
+			type:"POST",
+			contentType : 'application/json; charset=utf-8',
+			 dataType : 'json',
+			url:'removeproduct',  
+			 data:JSON.stringify(prodId),
+			 success:function(result){
+				 $('#modalbody').html('');
+				 $.each(result,function(index,item){
+					 console.log(result)
+					 
+					  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
+		              '<div class="row no-gutters">'+
+	                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
+	                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
+	                   '</div>'+
+	                  '<div class="col-sm-9">'+
+	                       '<div class="card-body" style="height: 80px">'+
+	                           '<h6 class="card-title">'+item.itemName+'</h6>'+
+	                          
+	                       '</div>'+
+	                      '<div class="card-footer" style="border: 0;">'+
+	                           '<div class="text-right">'+
+	                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
+	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
+	                           '</div>'+
+	                       '</div>'+
+	                  ' </div>'+
+	               '</div>'+
+	           '</div>'
+				;
+				$("#modalbody").append(htmlVar); 
+					 
+				 })
+			 },
+			 error: function(xhr, status, error) {
+				 window.location.replace("http://localhost:8081/login")
+			   },			
+		});
+		
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+
 	function addToCart(pid){
 		let prodId={
 			"pid":pid
@@ -302,6 +342,7 @@ border:2px solid blue;
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
 	                           '<div class="text-right">'+
+	                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
 	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 	                           '</div>'+
 	                       '</div>'+
@@ -373,9 +414,7 @@ function searchProduct(){
 	
 }		
 
-
-
-
+/* 
        function buyProduct(pid){
     	   let prodid={
     			   "productId":pid
@@ -408,7 +447,7 @@ function searchProduct(){
     	   
     	   
        }
-
+ */
 </script>
 
 </body>

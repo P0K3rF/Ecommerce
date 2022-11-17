@@ -230,6 +230,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 	var productId="";
 	
 	function getUpdateData(pid){
+		console.log(pid)
 		productId=pid;
 		let prodId={
 				"productId":pid
