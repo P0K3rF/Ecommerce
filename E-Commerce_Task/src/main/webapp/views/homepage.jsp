@@ -201,8 +201,7 @@ border:2px solid blue;
 				<%
 				}
 				%>
-			</div>
-			<div class="pagination">
+				<div class="pagination">
 
 			<%
 			for (int i = 0; i < Pagecount; i++) {
@@ -214,6 +213,8 @@ border:2px solid blue;
 			}
 			%>
 		</div>
+			</div>
+			
 		</div>
 	</div>
 
@@ -259,33 +260,38 @@ border:2px solid blue;
 			url:'getCartProduct',  
 			data:{"data":"data"},
 			 success:function(result){
-				 $('#modalbody').html('');
-				 $.each(result,function(index,item){
-					 console.log(result)
-					 
-					  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
-		              '<div class="row no-gutters">'+
-	                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
-	                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
-	                   '</div>'+
-	                  '<div class="col-sm-9">'+
-	                       '<div class="card-body" style="height: 80px">'+
-	                           '<h6 class="card-title">'+item.itemName+'</h6>'+
-	                   
-	                       '</div>'+
-	                      '<div class="card-footer" style="border: 0;">'+
-	                           '<div class="text-right">'+
-	                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
-	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
-	                           '</div>'+
-	                       '</div>'+
-	                  ' </div>'+
-	               '</div>'+
-	           '</div>'
-				;
-				$("#modalbody").append(htmlVar); 
-					 
-				 })
+				 console.log(result)
+				 if(result.statusCode==204){
+					 $('#modalbody').html("<h1>No Cart Item Found</h1>");
+				 }
+				 else{
+					 $('#modalbody').html(''); 		 
+					   $.each(result.t,function(index,item){
+					 	  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+ 
+			              '<div class="row no-gutters">'+
+		                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
+		                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
+		                   '</div>'+
+		                  '<div class="col-sm-9">'+
+		                       '<div class="card-body" style="height: 80px">'+
+		                           '<h6 class="card-title">'+item.itemName+'</h6>'+
+		                   
+		                       '</div>'+
+		                      '<div class="card-footer" style="border: 0;">'+
+		                           '<div class="text-right">'+
+		                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
+		                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
+		                           '</div>'+
+		                       '</div>'+
+		                  ' </div>'+
+		               '</div>'+
+		           '</div>'
+					; 
+					 $("#modalbody").append(htmlVar); 
+						 
+				 	  }) 
+				 }
+				 
 			 },
 			 error: function(xhr, status, error) {
 				 $("#modalbody").append('<h1>Cart is Empty </h1>'); 
@@ -365,36 +371,42 @@ border:2px solid blue;
 			 data:JSON.stringify(prodId),
 
 			 success:function(result){
+				 console.log(result)
+				 if(result.statusCode==401){
+					  window.location.href="http://localhost:8081/login"; 
+				 }else{
 					 $('#modalbody').html('');
-				 $.each(result,function(index,item){
-					 console.log(result)
-					 
-					  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
-		              '<div class="row no-gutters">'+
-	                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
-	                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
-	                   '</div>'+
-	                  '<div class="col-sm-9">'+
-	                       '<div class="card-body" style="height: 80px">'+
-	                           '<h6 class="card-title">'+item.itemName+'</h6>'+
-	                          
-	                       '</div>'+
-	                      '<div class="card-footer" style="border: 0;">'+
-	                           '<div class="text-right">'+
-	                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
-	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
-	                           '</div>'+
-	                       '</div>'+
-	                  ' </div>'+
-	               '</div>'+
-	           '</div>'
-				;
-				$("#modalbody").append(htmlVar); 
-					 
-				 })
+					 $.each(result.t,function(index,item){
+						 
+						 
+						  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
+			              '<div class="row no-gutters">'+
+		                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
+		                       '<img class="card-img-top img-fluid my-2"  src="../productimages/'+item.itemPhoto+'" alt="Suresh Dasari Card" style="height: 100px; width: 200px;">'+
+		                   '</div>'+
+		                  '<div class="col-sm-9">'+
+		                       '<div class="card-body" style="height: 80px">'+
+		                           '<h6 class="card-title">'+item.itemName+'</h6>'+
+		                          
+		                       '</div>'+
+		                      '<div class="card-footer" style="border: 0;">'+
+		                           '<div class="text-right">'+
+		                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
+		                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
+		                           '</div>'+
+		                       '</div>'+
+		                  ' </div>'+
+		               '</div>'+
+		           '</div>'
+					;
+					$("#modalbody").append(htmlVar); 
+						 
+					 })
+				 }
+				
 			 },
 			 error: function(xhr, status, error) {
-				 window.location.replace("http://localhost:8081/login")
+		console.log(error)
 			   },			
 		});
 	}
@@ -441,6 +453,7 @@ function searchProduct(){
 					'</div>'+
 				'</div>'+
 			'</div>'
+			
 			;
 				 $('#product-container').append(htmlVar);
 			 })	 

@@ -88,17 +88,18 @@ public class HomeController {
 			return "redirect:login?msg=Invalid Credentials";
 		}
 	}
-	
-	@PostMapping("/getCartProduct")
-	public @ResponseBody List<Product> getProductsInCart(@RequestBody String data,HttpSession session) throws NullPointerException {
-		
-		if(session.getAttribute("user")==null) {
-			return null;
+
+	@PostMapping(path="/getCartProduct")
+	public @ResponseBody ResponseStatus<List<Product>>  getProductsInCart(@RequestBody String data,HttpSession session) throws NullPointerException {
+//		HttpStatus.
+		if(this.cartProduct.isEmpty())
+		{
+			return new ResponseStatus<>(204,cartProduct);
 		}
-		if(!this.cartProduct.isEmpty())
-			return this.cartProduct;
-		return null;
+		return new ResponseStatus<>(200,cartProduct);
+
 	}
+	
 	
 	
 	
@@ -118,10 +119,10 @@ public class HomeController {
 	
 
 	@PostMapping("/proudctId")
-	public @ResponseBody List<Product> getProductById(@RequestBody String pid, HttpSession session) throws NullPointerException {
+	public @ResponseBody ResponseStatus<List<Product>> getProductById(@RequestBody String pid, HttpSession session) throws NullPointerException {
 		
 		if(session.getAttribute("user")==null) {
-			return null;
+			return new ResponseStatus<>(401,null);
 		}
 		
 		JSONObject jsonObj = new JSONObject(pid);
@@ -132,12 +133,12 @@ public class HomeController {
 		} else {
 			for (Product p : cartProduct) {
 				if (p.getItemId() == prodId) {
-					return cartProduct;
+					return new ResponseStatus<>(200,cartProduct);
 				}
 			}
 			cartProduct.add(product);
 		}
-		return cartProduct;
+		return new ResponseStatus<>(200,cartProduct);
 	}
 	
 	

@@ -23,17 +23,21 @@ public class ImageUploader {
 		try {
 			String name=file.getOriginalFilename();
 			
-			if(name.isEmpty()) return this.productService.getProductById(productId).getItemPhoto();
-			String randomId=UUID.randomUUID().toString();
-			String fileName=randomId.concat(name.substring(name.lastIndexOf(".")));		
-			String fullpath=path+File.separator+fileName;
-			File f=new File(path);
+			if(name!=null) {
+				String randomId=UUID.randomUUID().toString();
+				String fileName=randomId.concat(name.substring(name.lastIndexOf(".")));		
+				String fullpath=path+File.separator+fileName;
+				File f=new File(path);
 
-			if(!f.exists())
-				f.mkdir();
-			
-			Files.copy(file.getInputStream(),Paths.get(fullpath));
-			return fileName;
+				if(!f.exists())
+					f.mkdir();
+				
+				Files.copy(file.getInputStream(),Paths.get(fullpath));
+				return fileName;
+			}else {
+				return this.productService.getProductById(productId).getItemPhoto();
+			}
+		
 		}
 		catch(Exception e) {
 			e.printStackTrace();

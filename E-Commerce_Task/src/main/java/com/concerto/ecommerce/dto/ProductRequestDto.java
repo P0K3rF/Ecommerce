@@ -16,7 +16,7 @@ public class ProductRequestDto implements Serializable{
 
 	private static final long serialVersionUID = 712361541555802962L;
 	
- MultipartFile image; 
+transient MultipartFile image; 
 
 	private int itemId;
 	private String itemName;
