@@ -10,6 +10,7 @@
 <%
 CustomerRequestDto userDto = (CustomerRequestDto) session.getAttribute("user");
 List<Product> products = (List<Product>) request.getAttribute("products");
+int Pagecount = (Integer) request.getAttribute("count");
 %>
 
 <!DOCTYPE html>
@@ -59,6 +60,25 @@ border:2px solid red;
 }
 .btn-outline-info{
 border:2px solid blue;
+}
+.pagination {
+	display: inline-block;
+}
+
+.pagination a {
+	color: black;
+	float: left;
+	padding: 8px 16px;
+	text-decoration: none;
+}
+
+.pagination a.active {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.pagination a:hover:not(.active) {
+	background-color: #ddd;
 }
 </style>
 </head>
@@ -140,12 +160,12 @@ border:2px solid blue;
 				<div class="card shadow  mb-2 bg-white rounded h-8">
 
 					<div class="row no-gutters">
-						<div class="col-sm-3" style="border-right: 2px solid blue;">
-							<img class="card-img-top img-fluid my-2"
+						<div class="col-sm-4" style="border-right: 2px solid blue;">
+							<img class="card-img-top img-fluid my-2 img-responsive"
 								src="../productimages/<%=p.getItemPhoto()%>"
 								alt="Suresh Dasari Card" style="height: 200px; width: 350px;">
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-8">
 							<div class="card-body" style="height: 180px">
 								<h5 class="card-title"><%=p.getItemName()%></h5>
 								<%
@@ -182,6 +202,18 @@ border:2px solid blue;
 				}
 				%>
 			</div>
+			<div class="pagination">
+
+			<%
+			for (int i = 0; i < Pagecount; i++) {
+			%>
+
+			<a onclick="changeActiveness(<%=i%>,this)" class="link-active"><%=i + 1%></a>
+
+			<%
+			}
+			%>
+		</div>
 		</div>
 	</div>
 
@@ -211,6 +243,13 @@ border:2px solid blue;
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 	<script>
+	
+	
+	function changeActiveness(pageno,temp){
+		window.location.href="http://localhost:8081?page="+pageno;
+	}
+	
+	
 	
 	$(document).ready(function(){
 		$.ajax({
@@ -395,8 +434,8 @@ function searchProduct(){
 						'<div class="card-footer" style="border: 0;">'+
 
 						'<div class="text-right">'+
-								'<a class="btn btn-primary" id="addCart" onclick="addToCart('+item.itemId+')">Add to Cart</a>'+
-								'<a href="#" class="btn btn-danger mx-2	">Buy Now</a>'+
+						'<a class="btn btn-outline-warning text-dark" onclick="addToCart('+item.itemId+')">Add to Cart</a>'+
+                        '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 							'</div>'+
 						'</div>'+
 					'</div>'+

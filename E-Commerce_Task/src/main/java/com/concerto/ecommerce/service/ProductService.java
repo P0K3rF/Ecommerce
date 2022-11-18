@@ -2,8 +2,10 @@ package com.concerto.ecommerce.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.json.JSONObject;
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,10 +25,8 @@ public class ProductService {
 	
 	public boolean insertProduct(ProductRequestDto productRequestDto) {
 		Product product=ValueMapper.convertProductDtoToProduct(productRequestDto);
-		System.out.println(product);
 		if(!this.productRepository.existsById(product.getItemId()))
 		{
-			System.out.println("Inserting product to database");
 			this.productRepository.save(product);
 			return true;
 		}
@@ -38,11 +38,10 @@ public class ProductService {
 		if(this.productRepository.existsById(productRequestDto.getItemId()))
 		{
 		Product product=ValueMapper.convertProductDtoToProduct(productRequestDto);
-		System.out.println("Product Converted from valuemapper :" + product);
 		this.productRepository.save(product);
 		return true;
 		}
-		System.out.println("Product not found with the given product id :" + productRequestDto.getItemId());
+		
 		return false;
 	}
 	
@@ -67,7 +66,14 @@ public class ProductService {
 	
 	public Product getProductById(int pid) {
       
-		return this.productRepository.findById(pid).get();
+	Optional<Product> optionalProduct=this.productRepository.findById(pid);
+	if(optionalProduct.isPresent()) {
+		return optionalProduct.get();
+	}
+	throw new EntityNotFoundException("Ëntity not found with the given product :"+ pid);
+		
+		
+		
 	}
 	
 	public List<Product> getProductBySearch(String productName){
@@ -85,7 +91,6 @@ public class ProductService {
 	}
 	
 	public void deductQuantity(int productQuantity,int itemId) {
-		System.out.println("Before Updating product quantity the values are :" + productQuantity + " AND " + itemId);
 		this.productRepository.updateQuantityOfProductAfterOrder(productQuantity, itemId);
 	}
 	

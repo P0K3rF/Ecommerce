@@ -2,6 +2,8 @@ package com.concerto.ecommerce.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +29,16 @@ public class LoginCredentialsService {
 			}
 			return false;
 		}
-//		throw new EntityNotFoundException("Entity Not Found");
 		return false;
 	}
 	
 	public LoginCredentials getCredentails(String email) {
-		return this.credentialsRepository.findById(email).get();
+		Optional<LoginCredentials> credentials= this.credentialsRepository.findById(email);
+		if(credentials.isPresent())
+		{
+			return credentials.get();
+		}
+		throw new EntityNotFoundException("Entity not found with the givent email :" + email);
 	}
 	
 }

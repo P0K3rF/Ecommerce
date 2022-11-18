@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.concerto.ecommerce.dto.CustomerRequestDto;
 import com.concerto.ecommerce.dto.LoginCredentialsRequestDto;
-import com.concerto.ecommerce.dto.OrderRequestDto;
 import com.concerto.ecommerce.dto.ResponseStatus;
-import com.concerto.ecommerce.entity.Customer;
 import com.concerto.ecommerce.entity.Product;
 import com.concerto.ecommerce.mapper.ValueMapper;
 import com.concerto.ecommerce.service.CustomerService;
@@ -49,8 +47,16 @@ public class HomeController {
 	List<Product> cartProduct = new ArrayList<>();
 
 	@RequestMapping({ "/", "index" })
-	public String home(Model m) {
-		m.addAttribute("products", this.productService.getAllProducts());
+	public String home(@RequestParam(required = false)String page,Model m) {
+		int pag;
+		if(page==null) {
+			pag=0;
+		}else {
+			pag=Integer.parseInt(page);
+		}
+		List<Product>	products=this.productService.getAllProductsPageable(pag).getContent();
+		m.addAttribute("products",products);
+		m.addAttribute("count",this.productService.getProductCount());
 		return "homepage";
 	}
 
@@ -84,7 +90,7 @@ public class HomeController {
 	}
 	
 	@PostMapping("/getCartProduct")
-	public @ResponseBody List<Product> getProductsInCart(@RequestBody String data,HttpSession session) throws Exception {
+	public @ResponseBody List<Product> getProductsInCart(@RequestBody String data,HttpSession session) throws NullPointerException {
 		
 		if(session.getAttribute("user")==null) {
 			return null;
@@ -112,7 +118,7 @@ public class HomeController {
 	
 
 	@PostMapping("/proudctId")
-	public @ResponseBody List<Product> getProductById(@RequestBody String pid, HttpSession session) throws Exception {
+	public @ResponseBody List<Product> getProductById(@RequestBody String pid, HttpSession session) throws NullPointerException {
 		
 		if(session.getAttribute("user")==null) {
 			return null;
@@ -131,7 +137,6 @@ public class HomeController {
 			}
 			cartProduct.add(product);
 		}
-		System.out.println(cartProduct);
 		return cartProduct;
 	}
 	
@@ -140,7 +145,6 @@ public class HomeController {
 	public @ResponseBody List<Product> getProductBySearch(@RequestBody String productName){
 		JSONObject jsonObj = new JSONObject(productName);
 		String name = jsonObj.getString("productName");
-		System.out.println(name);
 		if (name.trim().isEmpty()) {
 			name="";
 		}
@@ -153,7 +157,6 @@ public class HomeController {
 		
 		JSONObject orderJson = new JSONObject(pid);
 		int prodId=orderJson.getInt("productId");
-//		System.out.println();
 		
 	CustomerRequestDto customer=(CustomerRequestDto)session.getAttribute("user");
 		if(
@@ -168,8 +171,6 @@ public class HomeController {
 	public String viewProductPage(@RequestParam("product_id") int productId,Model m) {
 		Product product= this.productService.getProductById(productId);
 		m.addAttribute("product",product);
-		
-		System.out.println("Product Id is "+ productId);
 		return "viewproduct";
 	}
 	

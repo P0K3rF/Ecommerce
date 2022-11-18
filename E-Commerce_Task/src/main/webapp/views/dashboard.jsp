@@ -11,6 +11,8 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
 	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 	crossorigin="anonymous">
+	<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
@@ -19,18 +21,50 @@
 	crossorigin="anonymous" />
 
 <%
-
 List<Product> products = (List<Product>) request.getAttribute("products");
+int Pagecount = (Integer) request.getAttribute("count");
 %>
+
+
+
+<style>
+.pagination {
+	display: inline-block;
+}
+
+.pagination a {
+	color: black;
+	float: left;
+	padding: 8px 16px;
+	text-decoration: none;
+}
+
+.pagination a.active {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.pagination a:hover:not(.active) {
+	background-color: #ddd;
+}
+</style>
+
 
 </head>
 <body>
 	<div class="container-fluid my-3">
-
 		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-			data-bs-target="#add-product-modal">Add Product</button>
-
+		<div style="display: inline;">
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+				data-bs-target="#add-product-modal">Add Product</button>
+			<form id="upload-file" method="POST" action="uploadfile"
+				enctype="multipart/form-data" style="display: inline">
+				<button type="submit" class="btn btn-warning mx-4">Upload
+					Excel File</button>
+				<input type="file" name="file" required="required">
+				<em class="fa fa-refresh fa-2x fa-spin" id="loader" style="display: none;"></em>
+			</form>
+		</div>
 		<!--Add Modal -->
 		<div class="modal fade" id="add-product-modal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,7 +105,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 							<div class="form-group">
 
 								<label id="1st" class="btn custom-input-btn" style="color: blue">
-									<i class="fa fa-cloud-upload" style="color: blue"></i> <input
+									<em class="fa fa-cloud-upload" style="color: blue"></em> <input
 									type="file" name="image" multiple>
 								</label>
 
@@ -93,10 +127,10 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 
 		<table class="table table-primary table-hover my-3 table-bordered"
-			style="border-color: black;">
+			style="border-color: black;" aria-describedby="mydesc">
 			<thead>
 				<tr class="text-center">
-					<th scope="col">Table Id</th>
+					
 					<th scope="col">Product Id</th>
 					<th scope="col">Title</th>
 					<th scope="col">Description</th>
@@ -109,11 +143,11 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 			</thead>
 			<tbody>
 				<%
-				int count = 1;
+				
 				for (Product p : products) {
 				%>
 				<tr>
-					<th scope="row"><%=count%></th>
+					
 					<td><%=p.getItemId()%></td>
 					<td><%=p.getItemName()%></td>
 					<td><%=p.getItemDescription()%></td>
@@ -124,7 +158,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 						style="height: 60px" width="60px" class="img-fluid img-thumbnail"
 						alt="Sheep"></td>
 					<td><button type="button" class="btn btn-success"
-							data-bs-toggle="modal" data-bs-target="#update-product-modal" onclick="getUpdateData(<%= p.getItemId()%>)">Update</button></td>
+							data-bs-toggle="modal" data-bs-target="#update-product-modal"
+							onclick="getUpdateData(<%=p.getItemId()%>)">Update</button></td>
 					<td><button type="button" class="btn btn-danger"
 							onclick="deleteProduct(<%=p.getItemId()%>)">Delete</button></td>
 				</tr>
@@ -132,12 +167,23 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 
 				<%
-				count++;
+				
 				}
 				%>
 			</tbody>
 		</table>
+		<div class="pagination">
 
+			<%
+			for (int i = 0; i < Pagecount; i++) {
+			%>
+
+			<a onclick="changeActiveness(<%=i%>,this)" class="link-active"><%=i + 1%></a>
+
+			<%
+			}
+			%>
+		</div>
 
 		<!-- Update Modal -->
 		<div class="modal fade" id="update-product-modal" tabindex="-1"
@@ -150,8 +196,8 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body" id="modal-body">
-						<form id="update_Post_form" action="updateproductasd" method="POST"
-							enctype="multipart/form-data">
+						<form id="update_Post_form" action="updateproductasd"
+							method="POST" enctype="multipart/form-data">
 
 							<br>
 							<div class="form-group">
@@ -182,16 +228,16 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 							<div class="form-group">
 
 								<label id="1st" class="btn custom-input-btn" style="color: blue"
-									onchange="changepro(event)"> <i
-									class="fa fa-cloud-upload" style="color: blue"></i> <input
-									type="file"id="file" name="image" multiple>
+									onchange="changepro(event)"> <em
+									class="fa fa-cloud-upload" style="color: blue"></em> <input
+									type="file" id="file" name="image" multiple>
 								</label>
 
 
 							</div>
 							<br>
 							<div class="container text-end">
-								<button type="submit" class="btn btn-outline-dark btn-lg" >Update
+								<button type="submit" class="btn btn-outline-dark btn-lg">Update
 									Product</button>
 							</div>
 
@@ -227,9 +273,43 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 
 	<script>
 	
+	function changeActiveness(pageno,temp){
+		window.location.href="http://localhost:8081/admin/dashboard?page="+pageno;
+	}
+
+	
+	
+	$('#upload-file').on('submit',function(event){
+		event.preventDefault();
+		$("#loader").show();
+	   let form=new FormData(this);   
+	   console.log("event handle")
+	   
+	 	$.ajax({
+			url : "serviceurl",
+			type : "POST",
+			data : form,
+			success : function(data, textStatus, jqXHR) {
+				 $("#loader").hide();
+				swal("Uploaded Data successfully Clic ok to refresh")
+				 .then((value)=>{
+					 location.reload()
+				 })
+				
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				console.log(errorThrown)
+			},
+			processData : false,
+			contentType : false
+		})  
+	})
+	
+	
+	
 	var productId="";
 	
-	function getUpdateData(pid){
+ 	function getUpdateData(pid){
 		console.log(pid)
 		productId=pid;
 		let prodId={
@@ -257,7 +337,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 			
 		});
 	
-	}
+	} 
 
 		
 		$('#addProduct').on('submit',function(event){
@@ -272,7 +352,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 					console.log()
 					swal("Added Succesfully")
 					 .then((value)=>{
-						 window.location="http://localhost:8081/admin/dashboard";
+						 location.reload()
 					 })
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -298,7 +378,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				success : function(data, textStatus, jqXHR) {
 					swal("Updated Succesfully")
 					 .then((value)=>{
-						 window.location="http://localhost:8081/admin/dashboard";
+						 location.reload()
 					 })
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -332,7 +412,7 @@ List<Product> products = (List<Product>) request.getAttribute("products");
 				 if(result.statusCode==200){
 					 swal("Deleted Succesfully")
 					 .then((value)=>{
-						 window.location="http://localhost:8081/admin/dashboard";
+						 location.reload()
 					 })
 				 }
 				 else{

@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet"
@@ -50,7 +50,7 @@ int Pagecount= (Integer) request.getAttribute("count");
 
 
 	<table class="table table-primary table-hover my-3 table-bordered"
-		style="border-color: black;">
+		style="border-color: black;" aria-describedby="mydesc">
 		<thead>
 			<tr class="text-center">
 				

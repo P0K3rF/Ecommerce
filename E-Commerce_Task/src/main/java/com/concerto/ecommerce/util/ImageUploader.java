@@ -23,15 +23,9 @@ public class ImageUploader {
 		try {
 			String name=file.getOriginalFilename();
 			
-			if(name.isEmpty()) {
-				System.out.println("name is empty adding new name :" +this.productService.getProductById(productId).getItemPhoto());
-				return this.productService.getProductById(productId).getItemPhoto();
-				
-			}
+			if(name.isEmpty()) return this.productService.getProductById(productId).getItemPhoto();
 			String randomId=UUID.randomUUID().toString();
-			String fileName=randomId.concat(name.substring(name.lastIndexOf(".")));
-			
-			System.out.println(fileName);			
+			String fileName=randomId.concat(name.substring(name.lastIndexOf(".")));		
 			String fullpath=path+File.separator+fileName;
 			File f=new File(path);
 
