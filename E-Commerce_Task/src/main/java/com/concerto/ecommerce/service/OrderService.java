@@ -38,6 +38,13 @@ public class OrderService {
 		return false;
 	}
 	
+	public boolean checkOutOfStocks(int productId) {
+		int productQuantity=this.productService.getQuantity(productId);
+		if(productQuantity>0) return true;
+		return false;
+	}
+	
+	
 	public List<Order> getAllOrderByEmail(Customer customer){
 	return this.orderRepository.findAllByCustomer(customer);
 	}

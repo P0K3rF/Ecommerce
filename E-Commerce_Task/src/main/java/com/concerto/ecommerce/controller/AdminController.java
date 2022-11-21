@@ -3,6 +3,7 @@ package com.concerto.ecommerce.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -42,9 +43,12 @@ public class AdminController
 	@Autowired
 	ImageUploader imageUploader;
 	
+	//Path of the image folder 
 	@Value("${upload.image}")
 	private String path;
 	
+	
+	//Request Page of Admin Dashboard
 	@GetMapping("/dashboard")
 	public String adminDashboard(@RequestParam(required = false)String page,Model m,HttpSession session) {
 		int pag;
@@ -62,15 +66,22 @@ public class AdminController
 		return "redirect:/login";
 	}
 	
+	
+	//Ajax Call for getting product By id to get data in the update Form
 	@PostMapping("/getproductbyid")
 	public @ResponseBody ResponseStatus<Product> getProductById(@RequestBody String pid){
+		try {
 		JSONObject orderJson = new JSONObject(pid);
 		int prodId=orderJson.getInt("productId");		
 	Product product=this.productService.getProductById(prodId);
 	return new ResponseStatus<>(200, product);
+		}catch(EntityNotFoundException entityNotFoundException) {
+			return new ResponseStatus<>(400,null);
+		}
 	
 	}
 	
+	//Ajax Call for deleting the data
 	@PostMapping("/deleteproductbyid")
 	public @ResponseBody ResponseStatus<String> deleteProductById(@RequestBody String pid){
 		JSONObject orderJson = new JSONObject(pid);
@@ -81,6 +92,7 @@ public class AdminController
 		return new ResponseStatus<>(401,"faild");
 	}
 	
+	//Ajax for adding data to database
 	
 	@PostMapping("/addproduct")
 	public @ResponseBody ResponseStatus<String> addProduct(@ModelAttribute ProductRequestDto dto)
@@ -91,6 +103,8 @@ public class AdminController
 		return new ResponseStatus<>(200,SUCCESS);
 	}
 	
+	
+	//Ajax call for updating the data
 	@PostMapping("/updateproduct")
 	public @ResponseBody ResponseStatus<String> updateProduct(@ModelAttribute ProductRequestDto dto)
 	{
@@ -101,20 +115,9 @@ public class AdminController
 		return new ResponseStatus<>(200,SUCCESS);
 	}
 	
-	@GetMapping("/testdashboard")
-	public String adminDashboardPageable(@RequestParam(required = false)String page,Model m,HttpSession session) {
-		int pag=Integer.parseInt(page);
-		List<Product>	products=this.productService.getAllProductsPageable(pag).getContent();
-		m.addAttribute("products",products);
-		m.addAttribute("count",this.productService.getProductCount());
-		
-		return "testingdashboard";
-	}
 	
-	
-	
-	
-	@PostMapping("/serviceurl")
+	//Getting value from the uploaded Excel file
+	@PostMapping("/excelUpload")
 	public @ResponseBody ResponseStatus<String> excelupload(MultipartFile file){
 		
 		try {
@@ -142,7 +145,7 @@ public class AdminController
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			return new ResponseStatus<>(500,"Internal Server Error");
 		}
 		
 		return new ResponseStatus<>(200,SUCCESS);

@@ -38,7 +38,7 @@
 						</div>
 
 						<div class="form-group">
-							<label for="firstname" style="margin-top: 5%">Name:<span
+							<label for="firstname" style="margin-top: 5%">First Name:<span
 								style="color: red; padding-left: 5px">*</span></label> <input
 								type="text" class="form-control" id="firstName"
 								placeholder="Enter your First Name" name="firstName"
@@ -47,7 +47,7 @@
 						</div>
 
 						<div class="form-group">
-							<label for="lastName" style="margin-top: 5%">Name:<span
+							<label for="lastName" style="margin-top: 5%">Last Name:<span
 								style="color: red; padding-left: 5px">*</span></label> <input
 								type="text" class="form-control" id="lastName"
 								placeholder="Enter your Last Name" name="lastName"
@@ -105,5 +105,46 @@
 	
 	
 	</form:form> --%>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+		crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script>
+	
+	
+/* 	$('#reg-form').on('submit',function(event){
+		event.preventDefault();
+		let form=new FormData(this)
+		$.ajax({
+			type:"POST",
+		url:"register",
+			data:form,
+			success:function(data){
+				$('.container')
+			},
+			error:function(jqXHR, textStatus, errorThrown){
+				
+			},
+			processData : false,
+			contentType : false	
+		})
+		
+		
+		
+	}) */
+	
+	</script>
+
+
+
 </body>
 </html>
+
+
+
+
+

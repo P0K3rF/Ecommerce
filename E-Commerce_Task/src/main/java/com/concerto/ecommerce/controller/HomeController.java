@@ -167,7 +167,18 @@ public class HomeController {
 			return new ResponseStatus<>(401,"Out Of Stock");
 		
 	}
-
+	
+	
+	
+	@PostMapping("/checkoutofstock")
+	public @ResponseBody ResponseStatus<String> checkOutOfStocks(@RequestBody String pid) 
+	{
+		JSONObject orderJson = new JSONObject(pid);
+		int prodId=orderJson.getInt("productId");
+		if(this.orderService.checkOutOfStocks(prodId))
+			return new ResponseStatus<>(200,"Product in Stocks");
+		return new ResponseStatus<>(401,"Out Of Stock");
+	}
 	@GetMapping("/viewproduct")
 	public String viewProductPage(@RequestParam("product_id") int productId,Model m) {
 		Product product= this.productService.getProductById(productId);

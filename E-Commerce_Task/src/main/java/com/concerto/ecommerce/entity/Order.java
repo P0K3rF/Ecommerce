@@ -34,6 +34,8 @@ public class Order {
 	@JoinColumn(name="email")
 	private Customer customer;
 	
+	private String address;
+	
 	@Column(name="orderDate", nullable = false,
 		    columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
 	private Date orderDate = new Date();

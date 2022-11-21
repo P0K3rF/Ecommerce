@@ -286,15 +286,20 @@ int Pagecount = (Integer) request.getAttribute("count");
 	   console.log("event handle")
 	   
 	 	$.ajax({
-			url : "serviceurl",
+			url : "excelUpload",
 			type : "POST",
 			data : form,
 			success : function(data, textStatus, jqXHR) {
+				if(data.statusCode==200){
 				 $("#loader").hide();
 				swal("Uploaded Data successfully Clic ok to refresh")
 				 .then((value)=>{
 					 location.reload()
 				 })
+				}else if(data.statusCode==500){
+					swal("Something went wrong on the server side please retry once!")
+				}
+				
 				
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
@@ -323,6 +328,7 @@ int Pagecount = (Integer) request.getAttribute("count");
 			url:'getproductbyid',  
 			 data:JSON.stringify(prodId),
 			 success:function(result){
+				 if(result.statusCode==200){
 				 $('#title').val(result.t.itemName)
 				 $('#description').val(result.t.itemDescription)
 				 $('#price').val(result.t.itemPrice)
@@ -330,6 +336,9 @@ int Pagecount = (Integer) request.getAttribute("count");
 			let htmlvar='<img src="../productimages/'+result.t.itemPhoto+'" id="output" class="img-fluid" style="height: 155px; width: 150px" /><br>'
 				 
 				 $('#itemImage').html(htmlvar)
+				 }else if(result.statusCode==400){
+					 swal("No Product found with the given id")
+				 }
 			 },
 			 error(xhr, status, error){
 				 console.log(error)
@@ -362,11 +371,7 @@ int Pagecount = (Integer) request.getAttribute("count");
 				contentType : false
 			})  
 	})
-		
-		
-		
-		
-		
+	
 		$('#update_Post_form').on('submit',function(event){
 			event.preventDefault();
            let form=new FormData(this);   
@@ -388,7 +393,6 @@ int Pagecount = (Integer) request.getAttribute("count");
 				contentType : false
 			})  
 	})
-	
 	var changepro = function(event) {
 		var output = document.getElementById('output');
 		output.src = URL.createObjectURL(event.target.files[0]);

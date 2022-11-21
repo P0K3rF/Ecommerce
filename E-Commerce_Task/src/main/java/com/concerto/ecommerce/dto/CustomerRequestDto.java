@@ -21,13 +21,16 @@ public class CustomerRequestDto implements Serializable{
 	@Email(message = "Invalid Email Format")
 	private String email;
 	@NotBlank(message = "Required Field")
+	@Pattern(regexp = "[a-zA-Z]",message="Invalid name")
 	private String firstName;
 	@NotBlank(message = "Required Field")
+	@Pattern(regexp = "[a-zA-Z]",message="Invalid name")
 	private String lastName;
 	@NotBlank(message = "Required Field")
 	@Pattern(regexp = "\\d{10}$",message = "Invalid Mobile Number")
 	private String mobileNo;
 	@NotBlank(message = "Required Field")
+	
 	private String address;
 	@NotBlank(message = "Required Field")
 	private String password;

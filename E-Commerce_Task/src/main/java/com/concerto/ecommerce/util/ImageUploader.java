@@ -23,7 +23,7 @@ public class ImageUploader {
 		try {
 			String name=file.getOriginalFilename();
 			
-			if(name!=null) {
+			if(name!=null && !name.isEmpty()) {
 				String randomId=UUID.randomUUID().toString();
 				String fileName=randomId.concat(name.substring(name.lastIndexOf(".")));		
 				String fullpath=path+File.separator+fileName;

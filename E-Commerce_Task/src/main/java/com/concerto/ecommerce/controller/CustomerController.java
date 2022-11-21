@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.concerto.ecommerce.dto.CustomerRequestDto;
 import com.concerto.ecommerce.entity.Customer;
@@ -57,6 +58,12 @@ public class CustomerController {
 		m.addAttribute("orders",orders);
 		return "order";
 	}
+	
+	@GetMapping("/payment")
+	public String paymentPage(@RequestParam("productd_id")String pid) {
+		return "payment";
+	}
+	
 	
 	
 }

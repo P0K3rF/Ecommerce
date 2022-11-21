@@ -98,14 +98,11 @@ Product product = (Product) request.getAttribute("product");
  			type:"POST",
  			contentType : 'application/json; charset=utf-8',
  			 dataType : 'json',
- 			url:'buyproduct',  
+ 			url:'checkoutofstock',  
  			 data:JSON.stringify(prodid),
  			 success:function(result){
  				 if(result.statusCode==200){
- 					 swal("Order Placed Succesfully click OK to Track your order")
- 					 .then((value)=>{
- 						 window.location="http://localhost:8081/customer/order";
- 					 })
+ 					window.location="http://localhost:8081/customer/payment?product_id="+pid;
  				 }
  				 else{
  					 $('#outOfStock').html("This Item is currently out of stock")
