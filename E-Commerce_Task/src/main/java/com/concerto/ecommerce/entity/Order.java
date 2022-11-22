@@ -31,7 +31,7 @@ public class Order {
 	@JoinColumn(name = "itemId")
 	private Product product;
 	@ManyToOne
-	@JoinColumn(name="email")
+	@JoinColumn(name="customerId")
 	private Customer customer;
 	
 	

@@ -6,6 +6,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.concerto.ecommerce.dto.CustomerRequestDto;
@@ -28,7 +29,7 @@ public class CustomerService {
 
 		Customer customer=ValueMapper.convertCustomerRequestDtoToCustomer(customerRequestDto);
 		LoginCredentials credentials=ValueMapper.convertCustomerDtoToLogin(customerRequestDto);
-		if(!this.customerRepository.existsById(customer.getEmail()))
+		if(!this.customerRepository.existsByEmail(customer.getEmail()))
 		{
 			this.customerRepository.save(customer);
 			this.loginRepository.save(credentials);
@@ -39,7 +40,7 @@ public class CustomerService {
 	}
 	
 	public Customer getCustomerById(String email) {
-	Optional<Customer> optCustomer=this.customerRepository.findById(email);
+	Optional<Customer> optCustomer=this.customerRepository.findByEmail(email);
 	if(optCustomer.isPresent()) 
 		return optCustomer.get();
 	throw new EntityNotFoundException("Customer Not Found " + email);
@@ -52,18 +53,29 @@ public class CustomerService {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		if(this.customerRepository.existsById(email))
+		if(this.customerRepository.existsByEmail(email))
 			return true;
 		return false;
 					
 	}
 	
-	public boolean updateEmail(String mobileNo,String email) {
+	public boolean updateEmail(String mobileNo,String oldEmail,String newEmail) {
 	Optional<Customer>	optionalCustomer=this.customerRepository.findByMobileNo(mobileNo);
+
 	if(optionalCustomer.isPresent()) {
 		Customer customer=optionalCustomer.get();
-		customer.setEmail(email);
+		
+			this.loginRepository.deleteById(oldEmail);
+			
+			CustomerRequestDto customerRequestDto=ValueMapper.convertCustomerToCustomerRequestDto(customer);
+			customerRequestDto.setEmail(newEmail);
+			LoginCredentials credentials=ValueMapper.convertCustomerDtoToLogin(customerRequestDto);
+
+			this.loginRepository.save(credentials);
+		
+		customer.setEmail(newEmail);
 		this.customerRepository.save(customer);
+		
 		return true;
 	}
 	return false;

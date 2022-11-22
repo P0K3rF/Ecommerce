@@ -77,7 +77,7 @@ public class CustomerController {
 
 		if(this.customerService.checkForEmail(customerEmail))
 			return new ResponseStatus<>(200,"SUCCESS");
-		return new ResponseStatus<>(401,"BAD REQUEST");
+		return new ResponseStatus<>(401,"This email does not match your current email please recheck");
 
 	}
 	
@@ -87,7 +87,7 @@ public class CustomerController {
 		JSONObject jsonObj = new JSONObject(email);
 		String customerEmail = jsonObj.getString("email");
 	CustomerRequestDto customerRequestDto=(CustomerRequestDto)session.getAttribute("user");
-		if(this.customerService.updateEmail(customerRequestDto.getMobileNo(), customerEmail))
+		if(this.customerService.updateEmail(customerRequestDto.getMobileNo(),customerRequestDto.getEmail(),customerEmail))
 			return new ResponseStatus<>(200,"SUCCESS");
 		return new ResponseStatus<>(500,"Something Went wrong please Try again later");
 		

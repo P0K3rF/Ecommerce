@@ -17,6 +17,7 @@ public class ValueMapper {
 	{
 		//Real entity
 		Customer c=new Customer();
+		c.setCustomerId(customerRequestDto.getCustomerId());
 		c.setEmail(customerRequestDto.getEmail());
 		c.setFirstName(customerRequestDto.getFirstName());
 		c.setLastName(customerRequestDto.getLastName());

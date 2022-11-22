@@ -1,3 +1,4 @@
+<%@page import="javax.websocket.Session"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -72,7 +73,7 @@ border:0;
 					
 							<label for="firstName" style="margin-top: 5%">First Name:</label> <input
 								type="text" class="form-control" id="firstName"
-								 name="firstName" value="Khalil" readonly="readonly">
+								 name="firstName" value=${sessionScope.user.getFirstName()} readonly="readonly">
 						
 					</div>
 					
@@ -80,7 +81,7 @@ border:0;
 					
 							<label for="LastName" style="margin-top: 5%">Last Name:</label> <input
 								type="text" class="form-control" id="lastName"
-								 name="lastName" value="Khan" readonly="readonly">
+								 name="lastName" value=${sessionScope.user.getLastName()} readonly="readonly">
 						
 					</div>
 					
@@ -90,10 +91,10 @@ border:0;
 							 <button type="button" class="btn-link" onclick="changeEmail()">Change Email</button>
 							<em class="fa fa-refresh fa-1x fa-spin" id="loader" style="display: none" ></em>
 							<em id="invalidEmail" style="color:red;display: none">Invalid email</em>
-							<button type="button" id="updateEmail"  class="btn btn-sm btn-success py-0" style="font-size: 0.8em;display: none;" onclick="updateEmail()" >Update</button>
+							<button type="button" id="updateEmail"  class="btn btn-sm btn-success py-0" style="font-size: 0.8em;display: none;" >Update</button>
 							 <input
 								type="text" class="form-control" id="email"
-								 name="email" value="ktausif185@gmail.com" readonly="readonly">
+								 name="email" value=${sessionScope.user.getEmail()} readonly="readonly">
 								 
 								 
 						
@@ -143,23 +144,11 @@ let customerEmail={
 			 if(data.statusCode==200){
 				 $('#updateEmail').show()
 				 $('#invalidEmail').hide()
-				 $('#email').removeAttr("readonly")
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
-				 
+				 $('#email').removeAttr("readonly") 
 			 }
 			 if(data.statusCode==401){
 				 $('#updateEmail').hide()
+				 swal(data.t)
 				 $('#invalidEmail').show()
 			 }
 		 },
@@ -171,6 +160,35 @@ let customerEmail={
 	})
 	}
 
+	$("#updateEmail").click(function(){
+		let customerEmail={
+				"email":$('#email').val()
+			}
+		$.ajax({
+			type:"POST",
+			contentType : 'application/json; charset=utf-8',
+			 dataType : 'json',
+			url:'updateEmail',  
+			 data:JSON.stringify(customerEmail),
+			 success:function(data){
+				 if(data.statusCode==200){
+					 $('#updateEmail').hide()
+					 swal('Updated Email successfully');
+				 }
+				 if(data.statusCode==500){
+					 $('#updateEmail').hide()
+					 swal('Something Went Wrong please try again!')
+				 }
+			 },
+			 error:function(xhr, status, error)
+			 {
+				 console.log(error)
+			 }
+		})
+		
+		});
+	
+	
 	</script>
 	
 	

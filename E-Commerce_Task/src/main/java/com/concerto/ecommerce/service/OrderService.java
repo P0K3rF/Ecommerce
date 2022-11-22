@@ -56,6 +56,6 @@ public class OrderService {
 	
 	
 	public List<Order> getAllOrderByEmail(Customer customer){
-	return this.orderRepository.findAllByCustomer(customer);
+	return this.orderRepository.findAllByCustomerEmail(customer.getEmail());
 	}
 }

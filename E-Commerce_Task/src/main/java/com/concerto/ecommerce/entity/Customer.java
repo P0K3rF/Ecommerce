@@ -3,6 +3,8 @@ package com.concerto.ecommerce.entity;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -18,7 +20,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 public class Customer {
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private int customerId;
 	private String email;
 	private String firstName;
 	private String lastName;

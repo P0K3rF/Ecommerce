@@ -17,6 +17,7 @@ public class CustomerRequestDto implements Serializable{
 
 	private static final long serialVersionUID = -2197545781937894900L;
 
+	private int customerId;
 	@NotBlank(message = "Email cannot Be Empty")
 	@Email(message = "Invalid Email Format")
 	private String email;

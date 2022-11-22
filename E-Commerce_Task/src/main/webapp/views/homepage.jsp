@@ -228,6 +228,13 @@ border:2px solid blue;
 					<h4>CART ITEM</h4>
 				</div>
 				<div class="modal-body" id="modalbody"></div>
+		
+				<div class="modal-footer text-center" id="modalfooter">
+				
+				<button>Checkout All</button>
+				
+				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -279,7 +286,7 @@ border:2px solid blue;
 		                       '</div>'+
 		                      '<div class="card-footer" style="border: 0;">'+
 		                           '<div class="text-right">'+
-		                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
+		                           '<a class="btn btn-outline-danger mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
 		                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 		                           '</div>'+
 		                       '</div>'+
@@ -339,7 +346,7 @@ border:2px solid blue;
 	                       '</div>'+
 	                      '<div class="card-footer" style="border: 0;">'+
 	                           '<div class="text-right">'+
-	                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
+	                           '<a class="btn btn-outline-danger mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
 	                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 	                           '</div>'+
 	                       '</div>'+
@@ -391,7 +398,7 @@ border:2px solid blue;
 		                       '</div>'+
 		                      '<div class="card-footer" style="border: 0;">'+
 		                           '<div class="text-right">'+
-		                           '<a class="btn btn-outline-info mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
+		                           '<a class="btn btn-outline-danger mx-2 text-dark" onclick="removeProduct('+item.itemId+')">Remove</a>'+
 		                               '<a class="btn btn-outline-info mx-2 text-dark" onclick="viewProduct('+item.itemId+')">View Product</a>'+
 		                           '</div>'+
 		                       '</div>'+

@@ -11,7 +11,7 @@ import com.concerto.ecommerce.entity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 	
-	List<Order> findAllByCustomer(Customer customer);
+	List<Order> findAllByCustomerEmail(String email);
 	
 	@Query(nativeQuery = true,value = "select count(*) from order_table where itemId=?")
 	int countProduct(@Param("itemId") int id);
