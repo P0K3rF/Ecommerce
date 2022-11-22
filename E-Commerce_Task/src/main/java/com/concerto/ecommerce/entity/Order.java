@@ -1,4 +1,4 @@
-package com.concerto.ecommerce.entity;
+ package com.concerto.ecommerce.entity;
 
 import java.util.Date;
 
@@ -33,6 +33,7 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name="email")
 	private Customer customer;
+	
 	
 	private String address;
 	

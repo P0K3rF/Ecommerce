@@ -171,8 +171,13 @@ public class HomeController {
 	
 	
 	@PostMapping("/checkoutofstock")
-	public @ResponseBody ResponseStatus<String> checkOutOfStocks(@RequestBody String pid) 
+	public @ResponseBody ResponseStatus<String> checkOutOfStocks(@RequestBody String pid,HttpSession session) 
 	{
+		if(session.getAttribute("user")==null) {
+			return new ResponseStatus<>(405,"Forbidden Request");
+		}
+		
+		
 		JSONObject orderJson = new JSONObject(pid);
 		int prodId=orderJson.getInt("productId");
 		if(this.orderService.checkOutOfStocks(prodId))

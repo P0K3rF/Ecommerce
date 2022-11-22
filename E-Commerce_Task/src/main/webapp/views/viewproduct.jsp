@@ -102,7 +102,13 @@ Product product = (Product) request.getAttribute("product");
  			 data:JSON.stringify(prodid),
  			 success:function(result){
  				 if(result.statusCode==200){
- 					window.location="http://localhost:8081/customer/payment?product_id="+pid;
+ 					 window.location="http://localhost:8081/customer/payment?product_id="+pid;
+ 				 }
+ 				 else if(result.statusCode==405){
+ 					swal("You have to login first")
+					 .then((value)=>{
+						 window.location="http://localhost:8081/login";
+					 })
  				 }
  				 else{
  					 $('#outOfStock').html("This Item is currently out of stock")
@@ -110,12 +116,7 @@ Product product = (Product) request.getAttribute("product");
  			 
  			 },
  			 error: function(xhr, status, error) {
- 				if(status=="error") {
- 					swal("You have to login first")
-					 .then((value)=>{
-						 window.location="http://localhost:8081/login";
-					 })
- 				}
+ 				
  			   },	
  		})
  	   

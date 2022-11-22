@@ -122,27 +122,26 @@ public class AdminController
 		
 		try {
 			HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
+			System.out.println(workbook.getNumberOfSheets());
 			HSSFSheet sheet = workbook.getSheetAt(0);
-			
-			for(int i=1; i<sheet.getPhysicalNumberOfRows();i++) {
-				HSSFRow row = sheet.getRow(i);
-			
-				for(int j=0;j<row.getPhysicalNumberOfCells();) {
-					row.getCell(j).setCellType(CellType.STRING);		
-					 ProductRequestDto p=new ProductRequestDto();
-					  p.setItemName(row.getCell(j).toString());
-					  p.setItemDescription(row.getCell(j+1).toString());
-						
-					 p.setItemPrice(Double.parseDouble(row.getCell(j+3).toString()));
-					 double d=(row.getCell(j+2).getNumericCellValue());
-					Double d1=Double.valueOf(d);
-					p.setItemQuantity(d1.intValue());
-					 p.setItemPhoto(row.getCell(j+4).toString()); 
-					 this.productService.insertProduct(p);
-					 break;
-
-				}
-			}
+			System.out.println(sheet.getPhysicalNumberOfRows());
+			/*
+			 * for(int i=1; i<sheet.getPhysicalNumberOfRows();i++) { HSSFRow row =
+			 * sheet.getRow(i);
+			 * 
+			 * for(int j=0;j<row.getPhysicalNumberOfCells();) {
+			 * row.getCell(j).setCellType(CellType.STRING); ProductRequestDto p=new
+			 * ProductRequestDto(); p.setItemName(row.getCell(j).toString());
+			 * p.setItemDescription(row.getCell(j+1).toString());
+			 * 
+			 * p.setItemPrice(Double.parseDouble(row.getCell(j+3).toString())); double
+			 * d=(row.getCell(j+2).getNumericCellValue()); Double d1=Double.valueOf(d);
+			 * p.setItemQuantity(d1.intValue());
+			 * p.setItemPhoto(row.getCell(j+4).toString());
+			 * this.productService.insertProduct(p); break;
+			 * 
+			 * } }
+			 */
 			
 		} catch (IOException e) {
 			return new ResponseStatus<>(500,"Internal Server Error");

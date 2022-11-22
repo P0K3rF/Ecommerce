@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.concerto.ecommerce.dto.ProductRequestDto;
 import com.concerto.ecommerce.entity.Product;
@@ -71,9 +73,6 @@ public class ProductService {
 		return optionalProduct.get();
 	}
 	throw new EntityNotFoundException("Ëntity not found with the given product :"+ pid);
-		
-		
-		
 	}
 	
 	public List<Product> getProductBySearch(String productName){
@@ -86,10 +85,11 @@ public class ProductService {
 		return true;
 	}
 	
+		
 	public int getQuantity(int productId) {
 		return this.productRepository.countProductQuantity(productId);
 	}
-	
+//		@Transactional(isolation = Isolation.SERIALIZABLE)
 	public void deductQuantity(int productQuantity,int itemId) {
 		this.productRepository.updateQuantityOfProductAfterOrder(productQuantity, itemId);
 	}

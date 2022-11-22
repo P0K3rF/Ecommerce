@@ -2,8 +2,15 @@ package com.concerto.ecommerce.service;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.concerto.ecommerce.entity.Customer;
 import com.concerto.ecommerce.entity.Order;
@@ -22,7 +29,10 @@ public class OrderService {
 	@Autowired
 	OrderRepository orderRepository;
 	
-	public boolean buyProduct(String email,int productId) {
+	@Retryable(value = RuntimeException.class)
+	@Lock(LockModeType.OPTIMISTIC)
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	public boolean buyProduct(String email,int productId) {                
 		Customer customer=this.customerService.getCustomerById(email);
 		Product product=this.productService.getProductById(productId);
 	int productQuantity=this.productService.getQuantity(productId);

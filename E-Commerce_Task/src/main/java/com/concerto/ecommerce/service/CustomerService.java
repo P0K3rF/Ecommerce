@@ -44,4 +44,29 @@ public class CustomerService {
 		return optCustomer.get();
 	throw new EntityNotFoundException("Customer Not Found " + email);
 	}
+	
+	
+	public boolean checkForEmail(String email) {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if(this.customerRepository.existsById(email))
+			return true;
+		return false;
+					
+	}
+	
+	public boolean updateEmail(String mobileNo,String email) {
+	Optional<Customer>	optionalCustomer=this.customerRepository.findByMobileNo(mobileNo);
+	if(optionalCustomer.isPresent()) {
+		Customer customer=optionalCustomer.get();
+		customer.setEmail(email);
+		this.customerRepository.save(customer);
+		return true;
+	}
+	return false;
+	}
+	
 }
