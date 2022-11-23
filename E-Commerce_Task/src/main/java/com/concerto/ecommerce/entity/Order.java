@@ -37,14 +37,19 @@ public class Order {
 	
 	private String address;
 	
-	@Column(name="orderDate", nullable = false,
+	private String optionalEmail;
+	
+		@Column(name="orderDate", nullable = false,
 		    columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
 	private Date orderDate = new Date();
 
-	@Override
-	public String toString() {
-		return "Order [orderId=" + orderId + ", customer=" + customer + ", OrderDate=" + orderDate + "]";
-	}
+		@Override
+		public String toString() {
+			return "Order [orderId=" + orderId + ", product=" + product + ", customer=" + customer + ", address="
+					+ address + ", optionalEmail=" + optionalEmail + ", orderDate=" + orderDate + "]";
+		}
+
+
 	
 	
 	

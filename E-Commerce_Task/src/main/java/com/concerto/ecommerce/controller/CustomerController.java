@@ -22,9 +22,11 @@ import com.concerto.ecommerce.dto.CustomerRequestDto;
 import com.concerto.ecommerce.dto.ResponseStatus;
 import com.concerto.ecommerce.entity.Customer;
 import com.concerto.ecommerce.entity.Order;
+import com.concerto.ecommerce.entity.Product;
 import com.concerto.ecommerce.mapper.ValueMapper;
 import com.concerto.ecommerce.service.CustomerService;
 import com.concerto.ecommerce.service.OrderService;
+import com.concerto.ecommerce.service.ProductService;
 
 @Controller
 @RequestMapping("/customer")
@@ -36,6 +38,8 @@ public class CustomerController {
 	@Autowired
 	OrderService orderService;
 	
+	@Autowired
+	ProductService productService;
 	
 	@RequestMapping("/register")
 	public String registration(Model m) {
@@ -64,9 +68,11 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/payment")
-	public String paymentPage(HttpSession session, @RequestParam("product_id")String pid) {
+	public String paymentPage(HttpSession session, @RequestParam("product_id")String pid,Model m) {
 		if(session.getAttribute("user")==null)
 			return "redirect:/login";
+	Product p=this.productService.getProductById(Integer.parseInt(pid));
+		m.addAttribute("product",p);
 		return "payment";
 	}
 	
