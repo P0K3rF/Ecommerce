@@ -27,6 +27,9 @@ import com.concerto.ecommerce.mapper.ValueMapper;
 import com.concerto.ecommerce.service.CustomerService;
 import com.concerto.ecommerce.service.OrderService;
 import com.concerto.ecommerce.service.ProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 @Controller
 @RequestMapping("/customer")
@@ -68,11 +71,15 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/payment")
-	public String paymentPage(HttpSession session, @RequestParam("product_id")String pid,Model m) {
+	public String paymentPage(HttpSession session, @RequestParam("product_id")String pid,Model m) throws JsonProcessingException {
 		if(session.getAttribute("user")==null)
 			return "redirect:/login";
 	Product p=this.productService.getProductById(Integer.parseInt(pid));
-		m.addAttribute("product",p);
+	ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	List<Product> products=this.productService.getAllProducts();
+	String json = ow.writeValueAsString(products);
+	
+		m.addAttribute("product",json);
 		return "payment";
 	}
 	

@@ -78,30 +78,9 @@ span.price {
 		<%@include file="side_navbar.jsp"%>
 		<div class="container">
 			<div class="card shadow  mb-2 bg-white rounded h-8 my-3">
-				<div class="row">
-
-					<%-- <div class="card-header text-center">
-						<h2>
-							${product.getItemName()}<span style="color: blue">(&#8377;
-								${product.getItemPrice()})</span>
-						</h2>
-
-					</div> --%>
-				</div>
+				
 				<div class="card-body">
-					<%-- <div class="row">
-						<div class="col-7">
-							<p>${product.getItemDescription()}</p>
-
-						</div>
-						<div class="col-5" style="border: 2px solid blue">
-							<img class="card-img-top img-fluid my-2 img-responsive"
-								src="../productimages/${product.getItemPhoto()}"
-								alt="Suresh Dasari Card" style="height: 200px; width: 350px;">
-
-						</div>
-					</div>
-					<hr> --%>
+				
 					<form id="userDetail">
 						<div class="row">
 							<h4 class="my-3">Your Details :</h4>
@@ -147,14 +126,14 @@ span.price {
 
 						</div>
 						<div class="row my-3">
-						<div class="col-3">
+						<div class="col-4">
 								<label for="email" class="form-label">Mobile No:</label> <input
 									type="text" class="form-control font-weight-bold" id="mobileno"
 									name="mobileno" value=${sessionScope.user.getMobileNo() }
 									readonly="readonly" style="font-family: sans-serif;">
 
 							</div>
-							<div class="col-6 mx-4">
+							<div class="col-6">
 								<label for="address" class="form-label">Address :</label>
 								<button type="button" class="btn-link" onclick="changeAddress()">Edit</button>
 								<button type="button" id="updateEmail"
@@ -170,7 +149,7 @@ span.price {
 					</form>
 					<hr>
 
-					<div class="row">
+					<div class="row my-4">
 						<div class="col-6 mx-3"
 							style="background-color: #f2f2f2; font-family: Arial;">
 							<h4 class="my-3">Payment :</h4>
@@ -212,26 +191,16 @@ span.price {
 						<div class="col-5"
 							>
 							<div class="container" style="background-color: #f2f2f2; border-radius: 3px; font-family: Arial;">
-							<h4>
+							<h4 class="py-3">
 								Cart <span class="price" style="color: black"> <em
 									class="fa fa-shopping-cart"></em> <b>4</b></span>
 							</h4>
+							
 							<p>
 								<a class="cartproduct" href="#">Product 1</a> <span
 									class="price">$15</span>
 							</p>
-							<p>
-								<a class="cartproduct" href="#">Product 2</a> <span
-									class="price">$5</span>
-							</p>
-							<p>
-								<a class="cartproduct" href="#">Product 3</a> <span
-									class="price">$8</span>
-							</p>
-							<p>
-								<a class="cartproduct" href="#">Product 4</a> <span
-									class="price">$2</span>
-							</p>
+							
 							<hr>
 							<p>
 								Total <span class="price" style="color: black"><b>$30</b></span>
@@ -249,37 +218,6 @@ span.price {
 
 
 	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 		crossorigin="anonymous"></script>
@@ -291,6 +229,22 @@ span.price {
 
 
 	<script>
+	
+	
+	
+	$(document).ready(function(){
+		let name = ${product};
+	/* 	/* let prod=JSON.stringify(name); */
+		/*console.log(name.itemName)
+		console.log(typeof(obj)) */
+		$.each(name,function(index,item){
+			console.log(item)
+		})
+	})
+	
+	
+	
+	
 		function changeAddress() {
 			swal("Note: This address is associated with this specific order only")
 			$('#address').removeAttr("readonly")
