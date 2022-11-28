@@ -17,7 +17,7 @@ public class LoginCredentialsService {
 	@Autowired
 	LoginCredentialsRepository credentialsRepository;
 	
-	
+	//Validating Login credentials
 	public boolean validate(LoginCredentialsRequestDto credentialsRequestDto) {
 		LoginCredentials credentials= ValueMapper.convertLoginCredentialsRequestDto(credentialsRequestDto);
 		if(this.credentialsRepository.existsById(credentials.getEmail()))
@@ -32,6 +32,7 @@ public class LoginCredentialsService {
 		return false;
 	}
 	
+	//Getting credentails to check role
 	public LoginCredentials getCredentails(String email) {
 		Optional<LoginCredentials> credentials= this.credentialsRepository.findById(email);
 		if(credentials.isPresent())

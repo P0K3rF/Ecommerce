@@ -334,13 +334,12 @@ int Pagecount = (Integer) request.getAttribute("count");
 				 $('#price').val(result.t.itemPrice)
 				 $('#quantity').val(result.t.itemQuantity)
 			let htmlvar='<img src="../productimages/'+result.t.itemPhoto+'" id="output" class="img-fluid" style="height: 155px; width: 150px" /><br>'
-				 
 				 $('#itemImage').html(htmlvar)
 				 }else if(result.statusCode==400){
 					 swal("No Product found with the given id")
 				 }
 			 },
-			 error(xhr, status, error){
+			 error:function(xhr, status, error){
 				 console.log(error)
 			 },
 			

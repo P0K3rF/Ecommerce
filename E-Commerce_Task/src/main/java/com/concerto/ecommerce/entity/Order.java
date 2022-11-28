@@ -33,11 +33,9 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name="customerId")
 	private Customer customer;
-	
-	
 	private String address;
-	
-	private String optionalEmail;
+	private int orderQuantity;
+	private int orderPrice;
 	
 		@Column(name="orderDate", nullable = false,
 		    columnDefinition="TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
@@ -46,7 +44,8 @@ public class Order {
 		@Override
 		public String toString() {
 			return "Order [orderId=" + orderId + ", product=" + product + ", customer=" + customer + ", address="
-					+ address + ", optionalEmail=" + optionalEmail + ", orderDate=" + orderDate + "]";
+					+ address + ", orderQuantity=" + orderQuantity + ", orderPrice=" + orderPrice + ", orderDate="
+					+ orderDate + "]";
 		}
 
 

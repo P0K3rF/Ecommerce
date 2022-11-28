@@ -2,7 +2,6 @@ package com.concerto.ecommerce.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -19,7 +18,7 @@ public class CustomerRequestDto implements Serializable{
 
 	private int customerId;
 	@NotBlank(message = "Email cannot Be Empty")
-	@Email(message = "Invalid Email Format")
+	@Pattern(regexp = "[a-zA-Z0-9][a-zA-Z0-9_.]*@[a-zA-Z0-9]+([.][a-zA-Z0-9]+)+",message = "Invalid Email Format")
 	private String email;
 	@NotBlank(message = "Required Field")
 	/* @Pattern(regexp = "[a-zA-Z]",message="Invalid name") */

@@ -10,5 +10,8 @@ import lombok.NoArgsConstructor;
 
 public class OrderRequestDto {
 	private int productId;
-	private String customerEmail;
+	private int orderQuantity;
+	private String orderAddress;
+	private int orderPrice;
+
 }

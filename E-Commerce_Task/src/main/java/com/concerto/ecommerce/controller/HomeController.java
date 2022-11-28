@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ import com.concerto.ecommerce.service.OrderService;
 import com.concerto.ecommerce.service.ProductService;
 
 @Controller
-public class HomeController {
+public class HomeController{
 
 	@Autowired
 	LoginCredentialsService credentialsService;
@@ -46,12 +47,14 @@ public class HomeController {
 
 	List<Product> cartProduct = new ArrayList<>();
 
+	
+	
+	
+	//index page
 	@RequestMapping({ "/", "index" })
 	public String home(@RequestParam(required = false)String page,Model m) {
-		int pag;
-		if(page==null) {
-			pag=0;
-		}else {
+		int pag=0;
+		if(page!=null) {
 			pag=Integer.parseInt(page);
 		}
 		List<Product>	products=this.productService.getAllProductsPageable(pag).getContent();
@@ -60,12 +63,16 @@ public class HomeController {
 		return "homepage";
 	}
 
+	
+	//Login Page
 	@RequestMapping("/login")
 	public String login(Model m) {
 		m.addAttribute("loginCredentialDto", new LoginCredentialsRequestDto());
 		return "login";
 	}
 
+	
+	//Login Process
 	@PostMapping("/login")
 	public String postLogin(@Valid @ModelAttribute("loginCredentialDto") LoginCredentialsRequestDto credentials,
 			BindingResult bindingResult, HttpSession session) {
@@ -89,9 +96,9 @@ public class HomeController {
 		}
 	}
 
+	//Get Cart Product through ajax
 	@PostMapping(path="/getCartProduct")
-	public @ResponseBody ResponseStatus<List<Product>>  getProductsInCart(@RequestBody String data,HttpSession session) throws NullPointerException {
-//		HttpStatus.
+	public @ResponseBody ResponseStatus<List<Product>>  getProductsInCart(@RequestBody String data,HttpSession session){
 		if(this.cartProduct.isEmpty())
 		{
 			return new ResponseStatus<>(204,cartProduct);
@@ -102,7 +109,7 @@ public class HomeController {
 	
 	
 	
-	
+	//Remove Product from cart
 	@PostMapping("/removeproduct")
 	public @ResponseBody List<Product> removeProduct(@RequestBody String pid){
 		
@@ -117,7 +124,7 @@ public class HomeController {
 	}
 	
 	
-
+	//Get product by productId
 	@PostMapping("/proudctId")
 	public @ResponseBody ResponseStatus<List<Product>> getProductById(@RequestBody String pid, HttpSession session) throws NullPointerException {
 		
@@ -142,6 +149,8 @@ public class HomeController {
 	}
 	
 	
+	
+	//Search Product 
 	@PostMapping("/search")
 	public @ResponseBody List<Product> getProductBySearch(@RequestBody String productName){
 		JSONObject jsonObj = new JSONObject(productName);
@@ -153,23 +162,23 @@ public class HomeController {
 	}
 	
 	
-	@PostMapping("/buyproduct")
-	public @ResponseBody ResponseStatus<String> buyProduct(@RequestBody String pid,HttpSession session){
-		
-		JSONObject orderJson = new JSONObject(pid);
-		int prodId=orderJson.getInt("productId");
-		
-	CustomerRequestDto customer=(CustomerRequestDto)session.getAttribute("user");
-		if(
-		this.orderService.buyProduct(customer.getEmail(), prodId))
-			return new ResponseStatus<>(200,"Order Placed");
-		else
-			return new ResponseStatus<>(401,"Out Of Stock");
-		
-	}
+	/*
+	 * @PostMapping("/buyproduct") public @ResponseBody ResponseStatus<String>
+	 * buyProduct(@RequestBody String pid,HttpSession session){
+	 * 
+	 * JSONObject orderJson = new JSONObject(pid); int
+	 * prodId=orderJson.getInt("productId");
+	 * 
+	 * CustomerRequestDto customer=(CustomerRequestDto)session.getAttribute("user");
+	 * if( this.orderService.buyProduct(customer.getEmail(), prodId)) return new
+	 * ResponseStatus<>(200,"Order Placed"); else return new
+	 * ResponseStatus<>(401,"Out Of Stock");
+	 * 
+	 * }
+	 */
 	
 	
-	
+	//Check for out of stock
 	@PostMapping("/checkoutofstock")
 	public @ResponseBody ResponseStatus<String> checkOutOfStocks(@RequestBody String pid,HttpSession session) 
 	{
@@ -184,6 +193,8 @@ public class HomeController {
 			return new ResponseStatus<>(200,"Product in Stocks");
 		return new ResponseStatus<>(401,"Out Of Stock");
 	}
+	
+	//View All Product
 	@GetMapping("/viewproduct")
 	public String viewProductPage(@RequestParam("product_id") int productId,Model m) {
 		Product product= this.productService.getProductById(productId);

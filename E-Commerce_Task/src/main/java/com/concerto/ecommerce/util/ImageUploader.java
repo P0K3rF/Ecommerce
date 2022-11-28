@@ -17,7 +17,7 @@ public class ImageUploader {
 	@Autowired
 	ProductService productService;
 	int productId;
-	
+	//Image uploading by taking path and binary data of image
 	public String uploadImage(String path,MultipartFile  file)
 	{
 		try {

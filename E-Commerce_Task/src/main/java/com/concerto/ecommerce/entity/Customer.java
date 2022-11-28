@@ -1,6 +1,7 @@
 package com.concerto.ecommerce.entity;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int customerId;
+	@Column(unique = true)
 	private String email;
 	private String firstName;
 	private String lastName;

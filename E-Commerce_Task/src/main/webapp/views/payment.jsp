@@ -64,6 +64,10 @@ span.price {
 	color: grey;
 }
 
+span.quantity {
+	margin-left: 30%;
+}
+
 .proceedbtn:hover {
 	background-color: #45a049;
 }
@@ -78,9 +82,9 @@ span.price {
 		<%@include file="side_navbar.jsp"%>
 		<div class="container">
 			<div class="card shadow  mb-2 bg-white rounded h-8 my-3">
-				
+
 				<div class="card-body">
-				
+
 					<form id="userDetail">
 						<div class="row">
 							<h4 class="my-3">Your Details :</h4>
@@ -126,7 +130,7 @@ span.price {
 
 						</div>
 						<div class="row my-3">
-						<div class="col-4">
+							<div class="col-4">
 								<label for="email" class="form-label">Mobile No:</label> <input
 									type="text" class="form-control font-weight-bold" id="mobileno"
 									name="mobileno" value=${sessionScope.user.getMobileNo() }
@@ -142,7 +146,7 @@ span.price {
 								<textarea class="form-control " id="address" rows="3"
 									readonly="readonly">${sessionScope.user.getAddress()}</textarea>
 							</div>
-							
+
 
 
 						</div>
@@ -184,27 +188,35 @@ span.price {
 										placeholder="352">
 								</div>
 							</div>
-							<input type="submit" value="Proceed to buy" class="proceedbtn">
-
+							<input type="submit" value="Proceed to buy" class="proceedbtn"
+								onclick="buyProduct()">
 						</div>
 
-						<div class="col-5"
-							>
-							<div class="container" style="background-color: #f2f2f2; border-radius: 3px; font-family: Arial;">
-							<h4 class="py-3">
-								Cart <span class="price" style="color: black"> <em
-									class="fa fa-shopping-cart"></em> <b>4</b></span>
-							</h4>
-							
-							<p>
-								<a class="cartproduct" href="#">Product 1</a> <span
-									class="price">$15</span>
-							</p>
-							
-							<hr>
-							<p>
-								Total <span class="price" style="color: black"><b>$30</b></span>
-							</p>
+						<div class="col-5">
+							<div class="container"
+								style="background-color: #f2f2f2; border-radius: 3px; font-family: Arial;">
+								<h4 class="py-3">
+									Cart <span class="quantity">Quantity</span> <span class="price"
+										style="color: black"> <em class="fa fa-shopping-cart"></em>
+										<strong id="cartcount"></strong></span>
+								</h4>
+
+								<p>
+									<a class="cartproduct" id="cartproduct"></a>
+
+									<button onclick="increment()" style="margin-left: 80px">+</button>
+									<input id=orderQuantity type=text min=1 style="width: 40px"
+										value="1">
+									<button onclick="decrement()" id="decrementbtn">-</button>
+
+									<span class="price" id="cartprice"></span>
+								</p>
+
+								<hr>
+								<p>
+									Total <span class="price" style="color: black"><sup>&#8377;
+									</sup><strong id="carttotal"></strong></span>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -212,6 +224,7 @@ span.price {
 				</div>
 
 			</div>
+
 
 
 		</div>
@@ -229,17 +242,54 @@ span.price {
 
 
 	<script>
+	let cartInitialValue=0	
+
+	   function increment() {	
+		var $counter = $('#orderQuantity');
+		 $counter.val( parseInt($counter.val()) + 1 ) 
+			if($('#orderQuantity').val()>1){
+				$('#decrementbtn').removeAttr("disabled");
+			}
+	let quantity=$('#orderQuantity').val();
+	let	cartQuantity=Number(quantity)*Number(cartInitialValue)
+		$('#cartprice').text(cartQuantity)
+		$('#carttotal').text(cartQuantity)
+
+
+	   }
+       function decrement() {
+    	 
+    	   var $counter = $('#orderQuantity');
+  		 $counter.val( parseInt($counter.val()) - 1 ) 	
+  		  if($('#orderQuantity').val()==1){
+     			$('#decrementbtn').attr("disabled", true);
+     		}
+		  	let quantity=$('#orderQuantity').val();
+		  	let	cartQuantity=Number(quantity)*Number(cartInitialValue)	
+		  		$('#cartprice').text(cartQuantity)
+		  		$('#carttotal').text(cartQuantity)
+		   }
 	
 	
 	
 	$(document).ready(function(){
+		if($('#orderQuantity').val()==1){
+			$('#decrementbtn').attr("disabled", true);
+		}
 		let name = ${product};
-	/* 	/* let prod=JSON.stringify(name); */
-		/*console.log(name.itemName)
-		console.log(typeof(obj)) */
+	let cartcount=${count}
+	 $("#cartcount").text(cartcount);
+	let totalPrice=0;
+	if(name.length>1){
+		console.log("Product from cart")
+	}else{
 		$.each(name,function(index,item){
-			console.log(item)
+			$('#cartproduct').text(item.itemName)
+			$('#cartprice').text(item.itemPrice)
+			$('#carttotal').text(item.itemPrice)
 		})
+	}
+	cartInitialValue=$('#cartprice').text()
 	})
 	
 	
@@ -308,6 +358,50 @@ span.price {
 			})
 
 		});
+		
+		
+		
+		
+	    function buyProduct(pid){
+
+	    	
+	    	
+	    let modproduct=${product}	    	
+	    	let orderData={
+	    			"productId":modproduct.t.itemId,	
+	    				"orderQuantity":$('#orderQuantity').val(),
+	    			"orderAddress":$('#address').val(),
+	    			"orderPrice":$('#carttotal').text()
+	    	}
+	    	/* console.log(orderData) */
+	  	   
+	  		$.ajax({
+	  			type:"POST",
+	  			contentType : 'application/json; charset=utf-8',
+	  			 dataType : 'json',
+	  			url:'buyproduct',  
+	  			 data:JSON.stringify(orderData),
+	  			 success:function(result){
+	  				 if(result.statusCode==200){
+	  					swal('Order Successfully')
+	  				 }
+	  				 else if(result.statusCode==500){
+	  					swal('item out of stock ! try to decrease the quantity if any')
+	  				 }
+	  			 
+	  			 },
+	  			 error: function(xhr, status, error) {
+	  				
+	  			   },	
+	  		})
+	  	   
+	  	   
+	  	   
+	     }
+		
+		
+		
+		
 	</script>
 
 

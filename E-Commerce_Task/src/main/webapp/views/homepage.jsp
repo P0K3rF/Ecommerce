@@ -142,7 +142,7 @@ border:2px solid blue;
 							%>
 
 
-							<li class="nav-item "><a class="nav-link" href="#"><span
+							<li class="nav-item "><a class="nav-link"><span
 									class="fas fa-bell"></span> Notifications</a></li>
 							<li class="nav-item"><a class="nav-link" href="#"
 								data-bs-toggle="modal" data-bs-target="#add-post-modal"><span

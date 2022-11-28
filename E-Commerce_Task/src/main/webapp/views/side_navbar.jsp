@@ -13,11 +13,9 @@
 			</div>
 
 			<ul class="list-unstyled components">
-				<p class="font-weight-normal">Main Menu</p>
 				<li><a href="http://localhost:8081/">Home</a></li>
 				<li><a href="http://localhost:8081/customer/order">Order</a></li>
-				<li><a href="#">Portfolio</a></li>
-				<li><a href="#">Contact</a></li>
+				<li><a href="http://localhost:8081/customer/profile">Profile</a></li>
 			</ul>
 		</nav>
 </body>

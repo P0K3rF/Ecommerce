@@ -15,10 +15,15 @@
 .error {
 	color: red;
 }
+.success{
+color:green;
+}
 </style>
 </head>
 <body>
-	<h5>${param.msg}</h5>
+<div class="container text-center">
+			<h3 class="success" id="msg">${param.msg}</h3>
+			</div>  
 	<div class="container py-5 ">
 		<div class="col-md-5 offset-md-3">
 			<div class="card">
@@ -31,7 +36,7 @@
 						<div class="form-group">
 							<label for="email" style="margin-top: 5%">Email:<span
 								style="color: red; padding-left: 5px">*</span></label> <input
-								type="text" class="form-control" id="useremail"
+								type="email" class="form-control" id="useremail"
 								placeholder="Enter email" name="email">
 							<%-- <form:input cssClass="form-control" path="email"/> --%>
 							<form:errors path="email" cssClass="error" />
@@ -53,5 +58,14 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+		crossorigin="anonymous"></script>
+	<script>
+	setTimeout(function() {
+		  $("#msg").remove();
+		}, 3000);
+	
+	</script>
 </body>
 </html>
