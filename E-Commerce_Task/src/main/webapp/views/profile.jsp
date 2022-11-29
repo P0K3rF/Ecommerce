@@ -25,6 +25,14 @@
 }.msg{
 color:blue;
 }
+.square {
+position:absolute;
+color:red;
+  height: 220px;
+  width: 250px;
+  border: 2px solid black;
+    z-index: 1;
+}
 </style>
 </head>
 <body>
@@ -68,6 +76,7 @@ color:blue;
 								
 								
 								
+
 								
 								
 								
@@ -85,7 +94,7 @@ color:blue;
 
 
 
-							<div class="col-md-4 offset-md-1">
+							<div class="col-md-4 offset-md-1" >
 								<label for="MobileNo" style="margin-top: 5%">Mobile No :</label>
 								<input type="text" class="form-control font-weight-bold"
 									id="mobile" name="mobileNo"
@@ -98,26 +107,25 @@ color:blue;
 								
 								
 								
-								<br> <label for="Password" style="margin-top: 5%">Password
-									:</label> <input type="password" class="form-control font-weight-bold"
-									id="userpassword" name="password"
-									value=${sessionScope.user.getPassword()
-									}
-									readonly="readonly">
-									<p id="passwordError" style="display: none;" class="error">* should contain atleast 1 uppercase letter<br>
-							* should contain atleast 1 lowercase letter<br>
-							* should contain atleast 1 special letter<br>
-							* should contain atleast 1 numeric letter
-							</p>
-								<form:errors path="password" cssClass="error" />
-								
-								<br> <label for="address" class="form-label"
+								<br>  <label for="address" class="form-label"
 									style="margin-top: 5%">Address :</label>
 								<textarea class="form-control " id="address" rows="3"
 									name="address" readonly="readonly">${sessionScope.user.getAddress()}</textarea>
 								<p id="addressError" style="display: none;" class="error">Address
 								length should be less than 255 letters</p>
 								<form:errors path="address" cssClass="error" />
+								
+								<br><label for="Password" style="margin-top: 5%">Password
+									:</label> <input type="password" class="form-control font-weight-bold"
+									id="userpassword" name="password"
+									value=${sessionScope.user.getPassword()
+									}
+									readonly="readonly"
+									
+									onkeyup="checkPassword()">
+									<p id="passwordError" style="display: none;" class="error">
+								<form:errors path="password" cssClass="error" />
+								<p id="passworderror"></p>
 								<br>
 							</div>
 						</div>
@@ -153,8 +161,7 @@ color:blue;
 		  $("#msg").remove();
 		}, 3000);
 	
-	
-	
+
 		$('#editprofile').click(function(event) {
 			event.preventDefault()
 			$('#firstName').removeAttr("readonly")
@@ -215,7 +222,13 @@ color:blue;
 				} else {
 					$('#mobilenoError').hide()
 				}
-
+				
+				if(!checkPassword()){
+					$('#passwordError').show()
+					hasErrors = false
+				}else{
+					$('#passwordError').hide()
+				}
 				
 				if (inputaddress.length > 255) {
 					$('#addressError').show()
@@ -230,6 +243,24 @@ color:blue;
 			return hasErrors
 
 		}
+		
+		
+		
+		function checkPassword() {
+			let userpass=$('#userpassword').val();
+			 if (checkregxPassword(userpass)) {
+				 $('#passwordError').html('Invalid password')
+					$('#passwordError').hide()
+				return true;
+
+			} else {
+				$('#passwordError').html('Invalid password')
+				$('#passwordError').show()
+				return false;
+			} 
+		}
+		
+		
 
 		//Email Regex
 		function checkEmail(email) {
@@ -246,6 +277,11 @@ color:blue;
 			var regx = /^[0-9]{10}$/;
 			return !regx.test(mobile);
 		}
+		function checkregxPassword(password) {
+			var re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
+			return re.test(password)
+		}
+		
 	</script>
 
 

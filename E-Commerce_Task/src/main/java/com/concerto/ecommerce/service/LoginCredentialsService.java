@@ -32,7 +32,7 @@ public class LoginCredentialsService {
 		return false;
 	}
 	
-	//Getting credentails to check role
+	//Getting credentials to check role
 	public LoginCredentials getCredentails(String email) {
 		Optional<LoginCredentials> credentials= this.credentialsRepository.findById(email);
 		if(credentials.isPresent())

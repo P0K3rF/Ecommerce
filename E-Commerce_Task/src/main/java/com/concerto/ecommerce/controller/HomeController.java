@@ -52,15 +52,22 @@ public class HomeController{
 	
 	//index page
 	@RequestMapping({ "/", "index" })
-	public String home(@RequestParam(required = false)String page,Model m) {
-		int pag=0;
-		if(page!=null) {
-			pag=Integer.parseInt(page);
+	public String home(@RequestParam(required = false,name = "page")String queryParamPageNo,Model m) {
+		int page=0;
+		if(queryParamPageNo!=null)
+		{
+		try {
+				page=Integer.parseInt(queryParamPageNo);
+			}catch(NumberFormatException numberFormat) {
+				return "redirect:/";
+			}
 		}
-		List<Product>	products=this.productService.getAllProductsPageable(pag).getContent();
-		m.addAttribute("products",products);
+		
+		List<Product>	products=this.productService.getAllProductsPageable(page).getContent();
+		m.addAttribute("products",products);	
 		m.addAttribute("count",this.productService.getProductCount());
 		return "homepage";
+		
 	}
 
 	

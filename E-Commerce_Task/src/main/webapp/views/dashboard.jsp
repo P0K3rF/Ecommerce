@@ -47,6 +47,9 @@ int Pagecount = (Integer) request.getAttribute("count");
 .pagination a:hover:not(.active) {
 	background-color: #ddd;
 }
+.error{
+color:red;
+}
 </style>
 
 
@@ -81,32 +84,36 @@ int Pagecount = (Integer) request.getAttribute("count");
 
 							<br>
 							<div class="form-group">
-								Product Title : <input name="itemName" type="text"
-									placeholder="Enter Post Title" class="form-control">
+								Product Title : <input name="itemName" id="itemName" type="text"
+									placeholder="Enter Post Title" class="form-control" required="required">
+									<p id="itemNameError" style="display: none;" class="error"></p>
 							</div>
 							<br>
 							<div class="form-group">
 								Product Description :
-								<textarea name="itemDescription"
+								<textarea name="itemDescription" id="itemDescription"
 									placeholder="Enter Product Description" class="form-control"
-									style="height: 200px"></textarea>
+									style="height: 200px" required="required"></textarea>
+									<p id="itemDescriptionError" style="display: none;" class="error"></p>
 							</div>
 							<br>
 							<div class="form-group">
-								Product Price: <input type="text" name="itemPrice"
-									placeholder="Enter Product Price" class="form-control" />
+								Product Price: <input type="text" name="itemPrice" id="price"
+									placeholder="Enter Product Price" class="form-control" required="required"/>
+							<p id="itemPriceError" style="display: none;" class="error"></p>
 							</div>
 
 							<div class="form-group">
-								Product Quantity: <input type="number" name="itemQuantity"
-									placeholder="Enter Product Quantity" class="form-control" />
+								Product Quantity: <input type="number" name="itemQuantity" id="itemQuantity"
+									placeholder="Enter Product Quantity" class="form-control" required="required"/>
+							<p id="itemQuantityError" style="display: none;" class="error"></p>
 							</div>
 							<br>
 							<div class="form-group">
 
 								<label id="1st" class="btn custom-input-btn" style="color: blue">
 									<em class="fa fa-cloud-upload" style="color: blue"></em> <input
-									type="file" name="image" multiple>
+									type="file" name="image" multiple required="required">
 								</label>
 
 							</div>
@@ -202,25 +209,27 @@ int Pagecount = (Integer) request.getAttribute("count");
 							<br>
 							<div class="form-group">
 								Product Title : <input name="itemName" id="title" type="text"
-									placeholder="Enter Post Title" class="form-control">
+									placeholder="Enter Post Title" class="form-control" required="required">
 							</div>
 							<br>
 							<div class="form-group">
 								Product Description :
 								<textarea name="itemDescription" id="description"
 									placeholder="Enter Product Description" class="form-control"
-									style="height: 200px"></textarea>
+									style="height: 200px" required="required"></textarea>
 							</div>
 							<br>
 							<div class="form-group">
-								Product Price: <input type="text" name="itemPrice" id="price"
-									placeholder="Enter Product Price" class="form-control" />
+								Product Price: <input type="text" name="itemPrice" id="updatePrice"
+									placeholder="Enter Product Price" class="form-control" required="required"/>
+							<p id="itemUpdatePriceError" style="display: none;" class="error"></p>
 							</div>
 
 							<div class="form-group">
 								Product Quantity: <input type="number" name="itemQuantity"
 									id="quantity" placeholder="Enter Product Quantity"
-									class="form-control" />
+									class="form-control" required="required"/>
+									<p id="itemQuantityError" style="display: none;" class="error"></p>
 							</div>
 							<br>
 							<div class="form-group" id="itemImage"
@@ -230,7 +239,7 @@ int Pagecount = (Integer) request.getAttribute("count");
 								<label id="1st" class="btn custom-input-btn" style="color: blue"
 									onchange="changepro(event)"> <em
 									class="fa fa-cloud-upload" style="color: blue"></em> <input
-									type="file" id="file" name="image" multiple>
+									type="file" id="file" name="image" multiple >
 								</label>
 
 
@@ -249,13 +258,6 @@ int Pagecount = (Integer) request.getAttribute("count");
 				</div>
 			</div>
 		</div>
-
-
-
-
-
-
-
 
 	</div>
 
@@ -276,6 +278,7 @@ int Pagecount = (Integer) request.getAttribute("count");
 	function changeActiveness(pageno,temp){
 		window.location.href="http://localhost:8081/admin/dashboard?page="+pageno;
 	}
+
 
 	
 	
@@ -299,8 +302,6 @@ int Pagecount = (Integer) request.getAttribute("count");
 				}else if(data.statusCode==500){
 					swal("Something went wrong on the server side please retry once!")
 				}
-				
-				
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				console.log(errorThrown)
@@ -329,9 +330,10 @@ int Pagecount = (Integer) request.getAttribute("count");
 			 data:JSON.stringify(prodId),
 			 success:function(result){
 				 if(result.statusCode==200){
+					 console.log(result)
 				 $('#title').val(result.t.itemName)
 				 $('#description').val(result.t.itemDescription)
-				 $('#price').val(result.t.itemPrice)
+				 $('#updatePrice').val(result.t.itemPrice)
 				 $('#quantity').val(result.t.itemQuantity)
 			let htmlvar='<img src="../productimages/'+result.t.itemPhoto+'" id="output" class="img-fluid" style="height: 155px; width: 150px" /><br>'
 				 $('#itemImage').html(htmlvar)
@@ -350,6 +352,7 @@ int Pagecount = (Integer) request.getAttribute("count");
 		
 		$('#addProduct').on('submit',function(event){
 			event.preventDefault();
+			if(checkAddValidation()){
            let form=new FormData(this);   
            console.log("event handle")
 		 	$.ajax({
@@ -368,11 +371,13 @@ int Pagecount = (Integer) request.getAttribute("count");
 				},
 				processData : false,
 				contentType : false
-			})  
+			}) 
+			}
 	})
 	
 		$('#update_Post_form').on('submit',function(event){
 			event.preventDefault();
+			if(checkUpdateValidation()){
            let form=new FormData(this);   
            form.set("itemId",productId)
 		 	$.ajax({
@@ -391,6 +396,7 @@ int Pagecount = (Integer) request.getAttribute("count");
 				processData : false,
 				contentType : false
 			})  
+			}
 	})
 	var changepro = function(event) {
 		var output = document.getElementById('output');
@@ -428,6 +434,65 @@ int Pagecount = (Integer) request.getAttribute("count");
 				
 		});
 	}
+	
+	
+
+	function checkAddValidation(){
+		let hasError=true
+		let itemPrice=$('#price').val()
+
+		if(!checkItemQuantity(itemPrice)){
+			$('#itemPriceError').show()
+			$('#itemPriceError').html('Price should be in number only')
+			hasError=false
+		}else{
+			hasError=true
+			$('#itemPriceError').hide()
+		}
+		
+		return hasError
+		
+		
+	}
+	
+	function checkUpdateValidation(){
+		let hasError=true
+		let itemPrice=$('#updatePrice').val()
+
+		if(!checkItemQuantity(itemPrice)){
+			$('#itemUpdatePriceError').show()
+			$('#itemUpdatePriceError').html('Price should be in number only')
+			hasError=false
+		}else{
+			hasError=true
+			$('#itemUpdatePriceError').hide()
+		}
+		
+		return hasError
+		
+		
+	}
+	
+	function checkItemQuantity(price) {
+		var regx = /^-?\d+\.?\d*$/;
+		return regx.test(price);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

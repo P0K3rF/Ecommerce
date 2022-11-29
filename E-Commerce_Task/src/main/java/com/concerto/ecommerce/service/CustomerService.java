@@ -29,15 +29,23 @@ public class CustomerService {
 		Customer customer = ValueMapper.convertCustomerRequestDtoToCustomer(customerRequestDto);
 		LoginCredentials credentials = ValueMapper.convertCustomerDtoToLogin(customerRequestDto);
 		if (!this.customerRepository.existsByEmail(customer.getEmail())) {
-			this.customerRepository.save(customer);
-			this.loginRepository.save(credentials);
-			return true;
+			return	insertCustomerData(customer, "", credentials);
 		} else {
 			throw new EntityExistsException(
 					"Customer With the given Email id : " + customerRequestDto.getEmail() + " already exist");
 		}
 	}
+	
+	public boolean insertCustomerData(Customer customer,String email,LoginCredentials credentials) {
 
+		this.customerRepository.save(customer);	
+		if(!email.equals("")) {			
+			this.loginRepository.deleteById(email);
+		}
+		this.loginRepository.save(credentials);
+		return true;
+	
+	}
 	
 	//Updating Customer
 	public boolean updateCustomer(CustomerRequestDto customerRequestDto, String oldEmail) throws EntityExistsException {
@@ -47,16 +55,13 @@ public class CustomerService {
 		
 		
 		if(customer.getEmail().equals(oldEmail)) {
-		this.customerRepository.save(customer);	
-		return true;
+		return	insertCustomerData(customer, oldEmail, credentials);
+		
 		}
 
 		if (!this.customerRepository.existsByEmail(customer.getEmail())) {
 			try {
-				this.customerRepository.save(customer);
-				this.loginRepository.deleteById(oldEmail);
-				this.loginRepository.save(credentials);
-				return true;
+				return	insertCustomerData(customer, oldEmail, credentials);
 			} catch (EntityExistsException e) {
 
 				throw new EntityExistsException("Customer already exists");
@@ -64,18 +69,7 @@ public class CustomerService {
 		}
 
 		return false;
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	}
 
 	//Getting customer by customerId

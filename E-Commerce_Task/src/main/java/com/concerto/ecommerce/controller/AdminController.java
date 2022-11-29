@@ -48,15 +48,19 @@ public class AdminController {
 
 	// Request Page of Admin Dashboard
 	@GetMapping("/dashboard")
-	public String adminDashboard(@RequestParam(required = false) String page, Model m, HttpSession session) {
-		int pag;
-		if (page == null) {
-			pag = 0;
-		} else {
-			pag = Integer.parseInt(page);
+	public String adminDashboard(@RequestParam(required = false,name = "page") String queryParamPageNo, Model m, HttpSession session) {
+		int page=0;
+		if (queryParamPageNo != null) {
+			try {
+				page=Integer.parseInt(queryParamPageNo);
+			}catch(NumberFormatException numberFormat) {
+				return "redirect:dashboard";
+			}
 		}
+		
 		if (session.getAttribute("admin") != null) {
-			List<Product> products = this.productService.getAllProductsPageable(pag).getContent();
+
+			List<Product> products = this.productService.getAllProductsPageable(page).getContent();
 			m.addAttribute("products", products);
 			m.addAttribute("count", this.productService.getProductCount());
 			return "dashboard";

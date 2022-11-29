@@ -96,18 +96,34 @@
 								onkeyup="checkPassword()">
 								<input type="checkbox" onclick="showPassword()"> Show Password
 							<form:errors path="password" cssClass="error" />
-							<p id="passwordError" style="display: none;" class="error">* should contain atleast 1 uppercase letter<br>
-							* should contain atleast 1 lowercase letter<br>
-							* should contain atleast 1 special letter<br>
-							* should contain atleast 1 numeric letter
-							</p>
+						<div  id="passwordError" style="display: none; font-size: 15px"
+									class="error">
+								<p>should contain minimum 8 character</p>
+								
+								<p>should contain atleast 1 uppercase letter</p>
+								
+								<p>should contain atleast 1 lowercase letter</p>
+							
+								
+								<p>should contain atleast 1 special letter</p>
+							
+								<p>should contain atleast 1 numeric letter</p>
+								
+
+							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group" style="display:none;" id="div-confirm">
 							<label for="userconfirmpassword" style="margin-top: 5%">Confirm Password:<span
 								style="color: red; padding-left: 5px">*</span></label> <input
 								type="password" class="form-control" id="userconfirmpassword"
 								placeholder="Confirm Password" required="required"
-								onkeyup="confirmPassword()">
+								onkeyup="confirmPassword()"
+									oncut="return false"
+										oncopy="return false"
+										onpaste="return false"
+										ondrag="return false"
+										ondrop="return false"		
+								>
 							
 							<form:errors path="password" cssClass="error" />
 							<p id="confirmpasswordError" style="display: none;">
@@ -168,7 +184,13 @@
 			$('#mobilenoError').hide()
 		});
 		$("#userpassword").focus(function() {
-			$('#passwordError').hide()
+			if($('#userpassword').val()==$('#userconfirmpassword').val()){
+				console.log("true password")
+			  $('#passwordError').hide()
+			}
+			else{
+				 $('#passwordError').show()
+			}
 		});
 		$("#address").focus(function() {
 			$('#addressError').hide()
@@ -243,15 +265,52 @@
 		}
 
 		function checkPassword() {
-		
-			if (checkregxPassword($('#userpassword').val())) {
-				console.log()
+			let userpass=$('#userpassword').val();
+			if(checkCap(userpass)){
+				$('#passwordError').children().eq(1).css("color","green")
+			}else{
+				$('#passwordError').children().eq(1).css("color","red")
+				
+			}
+			if(checksmall(userpass)){
+				$('#passwordError').children().eq(2).css("color","green")
+			}else{
+				$('#passwordError').children().eq(2).css("color","red")
+			
+			}
+			if(checkspecial(userpass)){
+				$('#passwordError').children().eq(3).css("color","green");
+				
+			}else{
+				$('#passwordError').children().eq(3).css("color","red")
+				
+			}
+			
+			if(userpass.length>=8){
+				$('#passwordError').children().eq(0).css("color","green")
+				
+			}else{
+				$('#passwordError').children().eq(0).css("color","red")
+			
+			}
+			if(checknumber(userpass)){
+				$('#passwordError').children().eq(4).css("color","green")
+				
+			}else{
+				$('#passwordError').children().eq(4).css("color","red")
+			
+				
+			}
+			 if (checkregxPassword(userpass)) {
+					$('#passwordError').hide()
+				$('#div-confirm').show()
+				return true;
+
+			} else {
+				$('#div-confirm').hide()
 				$('#passwordError').show()
 				return false;
-			} else {
-				$('#passwordError').hide()
-				return true;
-			}
+			} 
 		}
 		
 		
@@ -259,6 +318,7 @@
 			let userpass=$('#userpassword').val();
 			let confirmpass=$('#userconfirmpassword').val()
 		if(userpass==confirmpass){
+			
 			$('#confirmpasswordError').show()
 			$("#confirmpasswordError").css("color","green");
 			$('#confirmpasswordError').text('Matched')
@@ -290,7 +350,26 @@
 		}
 		function checkregxPassword(password) {
 			var re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/;
-			return !re.test(password)
+			return re.test(password)
+		}
+		
+		function checkCap(pass) {
+			var re = /[A-Z]/
+			return re.test(pass)
+		}
+		
+		function checksmall(pass) {
+			var re = /[a-z]/
+			return re.test(pass)
+		}
+		function checknumber(pass) {
+			var re = /[0-9]/
+			return re.test(pass)
+		}
+		
+		function checkspecial(pass) {
+			var re =  /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
+			return re.test(pass)
 		}
 	</script>
 
