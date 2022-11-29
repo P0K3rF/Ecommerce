@@ -204,7 +204,7 @@ span.quantity {
 								<p>
 									<a class="cartproduct" id="cartproduct"></a>
 
-									<button onclick="increment()" style="margin-left: 80px">+</button>
+									<button onclick="increment()" style="margin-left: 80px" id="incrementbtn">+</button>
 									<input id=orderQuantity type=text min=1 style="width: 40px"
 										value="1">
 									<button onclick="decrement()" id="decrementbtn">-</button>
@@ -243,11 +243,15 @@ span.quantity {
 
 	<script>
 	let cartInitialValue=0	
-
+	let cartcount=${count}
+	
 	   function increment() {	
 		var $counter = $('#orderQuantity');
 		 $counter.val( parseInt($counter.val()) + 1 ) 
-			if($('#orderQuantity').val()>1){
+		 if($('#orderQuantity').val()==cartcount){
+			 $('#incrementbtn').attr("disabled", true);
+		 }
+		 if($('#orderQuantity').val()>1){
 				$('#decrementbtn').removeAttr("disabled");
 			}
 	let quantity=$('#orderQuantity').val();
@@ -277,8 +281,7 @@ span.quantity {
 			$('#decrementbtn').attr("disabled", true);
 		}
 		let name = ${product};
-	let cartcount=${count}
-	 $("#cartcount").text(cartcount);
+	
 	let totalPrice=0;
 	if(name.length>1){
 		console.log("Product from cart")

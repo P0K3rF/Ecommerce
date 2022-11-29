@@ -210,6 +210,7 @@ color:red;
 							<div class="form-group">
 								Product Title : <input name="itemName" id="title" type="text"
 									placeholder="Enter Post Title" class="form-control" required="required">
+									<p id="titleError" style="display: none;" class="error"></p>
 							</div>
 							<br>
 							<div class="form-group">
@@ -440,7 +441,7 @@ color:red;
 	function checkAddValidation(){
 		let hasError=true
 		let itemPrice=$('#price').val()
-
+		let itemName=$('itemName').val()
 		if(!checkItemQuantity(itemPrice)){
 			$('#itemPriceError').show()
 			$('#itemPriceError').html('Price should be in number only')
@@ -448,6 +449,15 @@ color:red;
 		}else{
 			hasError=true
 			$('#itemPriceError').hide()
+		}
+		if(itemName.length>255){
+			$('#itemNameError').show()
+			$('#itemNameError').html('Item Name should be less than 255 characters')
+			hasError=false
+			
+		}else{
+			hasError=true
+			$('#itemNameError').hide()
 		}
 		
 		return hasError
@@ -458,6 +468,7 @@ color:red;
 	function checkUpdateValidation(){
 		let hasError=true
 		let itemPrice=$('#updatePrice').val()
+		let title=$('#title').val()
 
 		if(!checkItemQuantity(itemPrice)){
 			$('#itemUpdatePriceError').show()
@@ -466,6 +477,14 @@ color:red;
 		}else{
 			hasError=true
 			$('#itemUpdatePriceError').hide()
+		}if(title.length>255){
+			$('#titleError').show()
+			$('#titleError').html('Item Name should be less than 255 characters')
+			hasError=false
+			
+		}else{
+			hasError=true
+			$('#titleError').hide()
 		}
 		
 		return hasError
