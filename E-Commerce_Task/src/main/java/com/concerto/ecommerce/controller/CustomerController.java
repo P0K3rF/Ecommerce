@@ -131,7 +131,6 @@ public class CustomerController {
 		m.addAttribute("orders", orders);
 		return "order";
 	}
-
 	//
 	@GetMapping("/payment")
 	public String paymentPage(HttpSession session, @RequestParam("product_id") String pid, Model m)
