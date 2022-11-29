@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -133,7 +132,7 @@ public class HomeController{
 	
 	//Get product by productId
 	@PostMapping("/proudctId")
-	public @ResponseBody ResponseStatus<List<Product>> getProductById(@RequestBody String pid, HttpSession session) throws NullPointerException {
+	public @ResponseBody ResponseStatus<List<Product>> getProductById(@RequestBody String pid, HttpSession session){
 		
 		if(session.getAttribute("user")==null) {
 			return new ResponseStatus<>(401,null);

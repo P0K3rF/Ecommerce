@@ -143,7 +143,7 @@ public class CustomerController {
 		ResponseStatus<Product> pro = new ResponseStatus<>(200, product);
 		String json = ow.writeValueAsString(pro);
 		m.addAttribute("product", json);
-		m.addAttribute("count", 1);
+		m.addAttribute("count", product.getItemQuantity());
 		return "payment";
 	}
 

@@ -206,7 +206,7 @@ span.quantity {
 
 									<button onclick="increment()" style="margin-left: 80px" id="incrementbtn">+</button>
 									<input id=orderQuantity type=text min=1 style="width: 40px"
-										value="1">
+										value="1" readonly="readonly">
 									<button onclick="decrement()" id="decrementbtn">-</button>
 
 									<span class="price" id="cartprice"></span>
@@ -265,6 +265,10 @@ span.quantity {
     	 
     	   var $counter = $('#orderQuantity');
   		 $counter.val( parseInt($counter.val()) - 1 ) 	
+  		 console.log($('#orderQuantity').val())
+  		if($('#orderQuantity').val()<=cartcount){
+			 $('#incrementbtn').attr("disabled", false);
+		 }
   		  if($('#orderQuantity').val()==1){
      			$('#decrementbtn').attr("disabled", true);
      		}
