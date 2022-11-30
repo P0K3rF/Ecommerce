@@ -103,19 +103,9 @@ color:red;
 									readonly="readonly">
 									<p id="mobilenoError" style="display: none;" class="error">Phone
 								number should be 10 digits only</p>
-								<form:errors path="mobileNo" cssClass="error" />
+								<form:errors path="mobileNo" cssClass="error" /><br>
 								
-								
-								
-								<br>  <label for="address" class="form-label"
-									style="margin-top: 5%">Address :</label>
-								<textarea class="form-control " id="address" rows="3"
-									name="address" readonly="readonly">${sessionScope.user.getAddress()}</textarea>
-								<p id="addressError" style="display: none;" class="error">Address
-								length should be less than 255 letters</p>
-								<form:errors path="address" cssClass="error" />
-								
-								<br><label for="Password" style="margin-top: 5%">Password
+								<label for="Password" style="margin-top: 5%">Password
 									:</label> <input type="password" class="form-control font-weight-bold"
 									id="userpassword" name="password"
 									value=${sessionScope.user.getPassword()
@@ -126,6 +116,15 @@ color:red;
 									<p id="passwordError" style="display: none;" class="error">
 								<form:errors path="password" cssClass="error" />
 								<p id="passworderror"></p>
+								
+								 <label for="address" class="form-label"
+									style="margin-top: 5%">Address :</label>
+								<textarea class="form-control " id="address" rows="3"
+									name="address" readonly="readonly">${sessionScope.user.getAddress()}</textarea>
+								<p id="addressError" style="display: none;" class="error">Address
+								length should be less than 255 letters</p>
+								<form:errors path="address" cssClass="error" />
+								
 								<br>
 							</div>
 						</div>

@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -112,7 +113,7 @@
 
 							</div>
 						</div>
-						<div class="form-group" style="display:none;" id="div-confirm">
+						<div class="form-group"  id="div-confirm">
 							<label for="userconfirmpassword" style="margin-top: 5%">Confirm Password:<span
 								style="color: red; padding-left: 5px">*</span></label> <input
 								type="password" class="form-control" id="userconfirmpassword"
@@ -184,8 +185,8 @@
 			$('#mobilenoError').hide()
 		});
 		$("#userpassword").focus(function() {
+		
 			if($('#userpassword').val()==$('#userconfirmpassword').val()){
-				console.log("true password")
 			  $('#passwordError').hide()
 			}
 			else{
@@ -265,6 +266,14 @@
 		}
 
 		function checkPassword() {
+			
+			
+			if($('#userconfirmpassword').val().length>0){	
+				console.log("confirm password")
+			confirmPassword()
+			}
+			
+
 			let userpass=$('#userpassword').val();
 			if(checkCap(userpass)){
 				$('#passwordError').children().eq(1).css("color","green")
@@ -303,11 +312,11 @@
 			}
 			 if (checkregxPassword(userpass)) {
 					$('#passwordError').hide()
-				$('#div-confirm').show()
+			/* 	$('#div-confirm').show() */
 				return true;
 
 			} else {
-				$('#div-confirm').hide()
+			/* 	$('#div-confirm').hide() */
 				$('#passwordError').show()
 				return false;
 			} 

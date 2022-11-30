@@ -133,10 +133,21 @@ public class CustomerController {
 	}
 	//
 	@GetMapping("/payment")
-	public String paymentPage(HttpSession session, @RequestParam("product_id") String pid, Model m)
+	public String paymentPage(HttpSession session, @RequestParam(required = false,name = "product_id") String pid, Model m)
 			throws JsonProcessingException {
 		if (session.getAttribute("user") == null)
 			return REDIRECTTOLOGIN;
+		
+		if(pid==null) {
+		CustomerRequestDto customerRequestDto=(CustomerRequestDto)session.getAttribute("user");
+		ResponseStatus<List<Product>> pro = new ResponseStatus<>(200, customerRequestDto.getProducts());
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = ow.writeValueAsString(pro);
+		m.addAttribute("product", json);
+		m.addAttribute("productCount", pro.getT().size());
+		return "payment";
+		}
+		
 		Product product = this.productService.getProductById(Integer.parseInt(pid));
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		ResponseStatus<Product> pro = new ResponseStatus<>(200, product);
@@ -144,6 +155,8 @@ public class CustomerController {
 		m.addAttribute("product", json);
 		m.addAttribute("count", product.getItemQuantity());
 		return "payment";
+		
+		
 	}
 
 	

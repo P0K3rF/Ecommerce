@@ -196,12 +196,17 @@ span.quantity {
 							<div class="container"
 								style="background-color: #f2f2f2; border-radius: 3px; font-family: Arial;">
 								<h4 class="py-3">
-									Cart <span class="quantity">Quantity</span> <span class="price"
-										style="color: black"> <em class="fa fa-shopping-cart"></em>
+									Cart 
+									<span class="quantity">Quantity</span> 
+									<span class="price"
+										style="color: black"> 
+										<em class="fa fa-shopping-cart">
+										</em>
 										<strong id="cartcount"></strong></span>
 								</h4>
-
-								<p>
+<div id="product-data">
+</div>
+							<!-- 	<p id="product-data">
 									<a class="cartproduct" id="cartproduct"></a>
 
 									<button onclick="increment()" style="margin-left: 80px" id="incrementbtn">+</button>
@@ -210,8 +215,8 @@ span.quantity {
 									<button onclick="decrement()" id="decrementbtn">-</button>
 
 									<span class="price" id="cartprice"></span>
-								</p>
-
+								</p> -->
+								
 								<hr>
 								<p>
 									Total <span class="price" style="color: black"><sup>&#8377;
@@ -285,15 +290,28 @@ span.quantity {
 			$('#decrementbtn').attr("disabled", true);
 		}
 		let name = ${product};
-	
+		console.log(name)	
 	let totalPrice=0;
-	if(name.length>1){
+		$('#product-data').html('');
+	if(name.t.length>1){
 		console.log("Product from cart")
 	}else{
+		
 		$.each(name,function(index,item){
-			$('#cartproduct').text(item.itemName)
-			$('#cartprice').text(item.itemPrice)
-			$('#carttotal').text(item.itemPrice)
+			
+			let htmlVar=
+				'<p id="product-data">'+
+			'<a class="cartproduct" id="cartproduct">'+item.itemName+'</a>'+
+
+			'<button onclick="increment()" style="margin-left: 80px" id="incrementbtn">+</button>'+
+			'<input id=orderQuantity  type=text min=1 style="width: 40px" value="1" readonly="readonly">'+
+			'<button onclick="decrement()" id="decrementbtn">-</button>'+
+			'<span class="price" id="cartprice">'+item.itemPrice+'</span>'+
+		'</p> '
+			
+			
+		$('#product-data').html(htmlVar);
+			$('#carttotal').text(item.itemPrice) 
 		})
 	}
 	cartInitialValue=$('#cartprice').text()

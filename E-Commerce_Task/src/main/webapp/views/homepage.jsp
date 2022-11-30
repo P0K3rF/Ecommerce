@@ -231,7 +231,7 @@ border:2px solid blue;
 		
 				<div class="modal-footer text-center" id="modalfooter">
 				
-				<button>Checkout All</button>
+				<button id="checkout" style="display: none" onclick="checkOut()">Checkout All</button>
 				
 				</div>
 				
@@ -270,6 +270,7 @@ border:2px solid blue;
 				 console.log(result)
 				 if(result.statusCode==204){
 					 $('#modalbody').html("<h1>No Cart Item Found</h1>");
+					 $('#checkout').hide()
 				 }
 				 else{
 					 $('#modalbody').html(''); 		 
@@ -295,6 +296,7 @@ border:2px solid blue;
 		           '</div>'
 					; 
 					 $("#modalbody").append(htmlVar); 
+					 $('#checkout').show()
 						 
 				 	  }) 
 				 }
@@ -331,9 +333,7 @@ border:2px solid blue;
 			 data:JSON.stringify(prodId),
 			 success:function(result){
 				 $('#modalbody').html('');
-				 $.each(result,function(index,item){
-					 console.log(result)
-					 
+				 $.each(result,function(index,item){					 
 					  let htmlVar = '<div class="card shadow  mb-2 bg-white rounded">'+
 		              '<div class="row no-gutters">'+
 	                   '<div class="col-sm-3" style="border-right: 2px solid blue;">'+
@@ -355,7 +355,7 @@ border:2px solid blue;
 	           '</div>'
 				;
 				$("#modalbody").append(htmlVar); 
-					 
+				$('#checkout').show()
 				 })
 			 },
 			 error: function(xhr, status, error) {
@@ -378,7 +378,6 @@ border:2px solid blue;
 			 data:JSON.stringify(prodId),
 
 			 success:function(result){
-				 console.log(result)
 				 if(result.statusCode==401){
 					  window.location.href="http://localhost:8081/login"; 
 				 }else{
@@ -407,7 +406,7 @@ border:2px solid blue;
 		           '</div>'
 					;
 					$("#modalbody").append(htmlVar); 
-						 
+					$('#checkout').show()
 					 })
 				 }
 				
@@ -507,6 +506,57 @@ function searchProduct(){
     	   
        }
  */
+ 
+ function checkOut(){
+	 
+	$.ajax({
+	
+		type:"POST",
+		contentType : 'application/json; charset=utf-8',
+		 dataType : 'json',
+		url:'checkoutProduct',  
+		 success:function(result){
+			 if(result.statusCode==200){
+				 window.location.href="http://localhost:8081/customer/payment";
+			 }
+		 },
+		 error: function(xhr, status, error) {
+				console.log(error)
+				
+			   },
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	})
+	
+	
+	
+	 
+	 
+	 
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 </script>
 
 </body>

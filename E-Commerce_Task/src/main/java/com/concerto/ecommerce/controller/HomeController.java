@@ -51,15 +51,11 @@ public class HomeController{
 	
 	//index page
 	@RequestMapping({ "/", "index" })
-	public String home(@RequestParam(required = false,name = "page")String queryParamPageNo,Model m) {
+	public String home(@RequestParam(required = false,name = "page")Integer queryParamPageNo,Model m) {
 		int page=0;
 		if(queryParamPageNo!=null)
 		{
-		try {
-				page=Integer.parseInt(queryParamPageNo);
-			}catch(NumberFormatException numberFormat) {
-				return "redirect:/";
-			}
+		page=queryParamPageNo;
 		}
 		
 		List<Product>	products=this.productService.getAllProductsPageable(page).getContent();
@@ -208,6 +204,13 @@ public class HomeController{
 		return "viewproduct";
 	}
 	
-	
+	@PostMapping("/checkoutProduct")
+	public @ResponseBody ResponseStatus<String> checkOutProduct(HttpSession session){
+		
+	CustomerRequestDto customerRequestDto=(CustomerRequestDto)session.getAttribute("user");
+	customerRequestDto.setProducts(cartProduct);
+	session.setAttribute("user", customerRequestDto);
+		return new ResponseStatus<>(200, "Success");
+	}
 	
 }

@@ -1,9 +1,12 @@
 package com.concerto.ecommerce.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
+import com.concerto.ecommerce.entity.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,4 +37,6 @@ public class CustomerRequestDto implements Serializable{
 	private String address;
 	@NotBlank(message = "Required Field")
 	private String password;
+	
+	private List<Product> products;
 }
