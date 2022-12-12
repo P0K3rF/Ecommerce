@@ -48,14 +48,10 @@ public class AdminController {
 
 	// Request Page of Admin Dashboard
 	@GetMapping("/dashboard")
-	public String adminDashboard(@RequestParam(required = false,name = "page") String queryParamPageNo, Model m, HttpSession session) {
+	public String adminDashboard(@RequestParam(required = false,name = "page") Integer queryParamPageNo, Model m, HttpSession session) {
 		int page=0;
 		if (queryParamPageNo != null) {
-			try {
-				page=Integer.parseInt(queryParamPageNo);
-			}catch(NumberFormatException numberFormat) {
-				return "redirect:dashboard";
-			}
+				page=queryParamPageNo;
 		}
 		
 		if (session.getAttribute("admin") != null) {
