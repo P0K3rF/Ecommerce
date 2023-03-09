@@ -441,7 +441,7 @@ color:red;
 	function checkAddValidation(){
 		let hasError=true
 		let itemPrice=$('#price').val()
-		let itemName=$('itemName').val()
+		let itemName=$('#itemName').val()
 		if(!checkItemQuantity(itemPrice)){
 			$('#itemPriceError').show()
 			$('#itemPriceError').html('Price should be in number only')
